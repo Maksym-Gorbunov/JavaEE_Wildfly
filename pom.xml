@@ -8,8 +8,8 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>schoolproject</name>
-    <description>A small JEE tutorial showing easy students / teachers in school</description>
+    <name>javaEE_lab1</name>
+    <description>A small JEE tutorial</description>
 
     <developers>
         <developer>
@@ -93,7 +93,7 @@
     </dependencies>
 
     <build>
-        <finalName>school</finalName>
+        <finalName>javaEE_lab1</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
             <plugin>
