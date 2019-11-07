@@ -19,6 +19,7 @@ public class StudentController {
     @Inject
     private SchoolAccessLocal sal;
 
+    //return all students
     @GET
     @Produces({"application/JSON"})
     public Response showStudents() {
