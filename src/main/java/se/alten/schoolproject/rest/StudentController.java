@@ -10,11 +10,14 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Stateless
 @NoArgsConstructor
 @Path("/student")
 public class StudentController {
+
+    private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
 
     @Inject
     private SchoolAccessLocal sal;
@@ -31,6 +34,17 @@ public class StudentController {
         }
     }
 
+
+
+
+    /*
+    {
+        "id": 1,
+        "forename": "Max",
+        "lastname": "Fry",
+        "email": "max.fry@gmail.com"
+    }
+    */
     @POST
     @Path("/add")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -42,13 +56,15 @@ public class StudentController {
         try {
 
             StudentModel answer = sal.addStudent(studentModel);
-
+            LOGGER.info(answer.toString());
+            System.out.println("answer: " + answer);
             switch ( answer.getForename()) {
                 case "empty":
                     return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Fill in all details please\"}").build();
                 case "duplicate":
                     return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Email already registered!\"}").build();
                 default:
+                    System.out.println("---new student was added");
                     return Response.ok(answer).build();
             }
         } catch ( Exception e ) {
@@ -57,7 +73,7 @@ public class StudentController {
     }
 
     @DELETE
-    @Path("{email}")
+    @Path("delete/{email}")
     public Response deleteUser( @PathParam("email") String email) {
         try {
             sal.removeStudent(email);
@@ -77,3 +93,6 @@ public class StudentController {
         sal.updateStudentPartial(studentModel);
     }
 }
+
+
+
