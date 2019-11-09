@@ -2,6 +2,7 @@ package se.alten.schoolproject.rest;
 
 import lombok.NoArgsConstructor;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
+import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.model.StudentModel;
 
 import javax.ejb.Stateless;
@@ -35,16 +36,6 @@ public class StudentController {
     }
 
 
-
-
-    /*
-    {
-        "id": 1,
-        "forename": "Max",
-        "lastname": "Fry",
-        "email": "max.fry@gmail.com"
-    }
-    */
     @POST
     @Path("/add")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -73,7 +64,7 @@ public class StudentController {
     }
 
     @DELETE
-    @Path("delete/{email}")
+    @Path("/delete/{email}")
     public Response deleteUser( @PathParam("email") String email) {
         try {
             sal.removeStudent(email);
@@ -83,7 +74,10 @@ public class StudentController {
         }
     }
 
+
+    //toDo  change to StudentModel
     @PUT
+    @Path("/update")
     public void updateStudent( @QueryParam("forename") String forename, @QueryParam("lastname") String lastname, @QueryParam("email") String email) {
         sal.updateStudent(forename, lastname, email);
     }
@@ -91,6 +85,18 @@ public class StudentController {
     @PATCH
     public void updatePartialAStudent(String studentModel) {
         sal.updateStudentPartial(studentModel);
+    }
+
+    @GET
+    @Path("find/{name}")
+    @Produces({"application/JSON"})
+    public Response findStudentByName(@PathParam("name") String name) {
+        try {
+            StudentModel student = sal.findStudentByName(name);
+            return Response.ok(student).build();
+        } catch ( Exception e ) {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 package se.alten.schoolproject.dao;
 
+import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.model.StudentModel;
 
 import javax.ejb.Local;
@@ -17,4 +18,6 @@ public interface SchoolAccessLocal {
     void updateStudent(String forename, String lastname, String email);
 
     void updateStudentPartial(String studentModel);
+
+    StudentModel findStudentByName(String forename);
 }

@@ -66,4 +66,11 @@ public class StudentTransaction implements StudentTransactionAccess{
                 .setParameter("email", studentFound.getEmail())
                 .executeUpdate();
     }
+
+    @Override
+    public Student findStudentByName(String forename) {
+        Student studentFound = (Student)entityManager.createQuery("SELECT s FROM Student s WHERE s.forename = :forename")
+                .setParameter("forename", forename).getSingleResult();
+        return studentFound;
+    }
 }

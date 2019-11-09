@@ -12,4 +12,5 @@ public interface StudentTransactionAccess {
     void removeStudent(String student);
     void updateStudent(String forename, String lastname, String email);
     void updateStudentPartial(Student studentToUpdate);
+    Student findStudentByName(String forename);
 }
