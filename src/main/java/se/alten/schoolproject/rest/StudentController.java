@@ -47,20 +47,25 @@ public class StudentController {
    */
   public Response addStudent(String studentBody) {
     try {
-
       StudentModel studentModel = sal.addStudent(studentBody);
       //LOGGER.info(studentModel.toString());
       //System.out.println("answer: " + studentModel);
       switch (studentModel.getForename()) {
         case "empty":
-          return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Fill in all details please\"}").build();
+          return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Fill in all details please\"}").build();  //406
         case "duplicate":
-          return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Email already registered!\"}").build();
+          return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Email already registered!\"}").build(); //417
         default:
           return Response.ok(studentModel).build();
       }
-    } catch (Exception e) {
-      return Response.status(Response.Status.BAD_REQUEST).build();
+    }
+//    catch (EJBTransactionRolledbackException e) {
+//      return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Student already exist!\"}").build();//417
+//    }
+    catch (RuntimeException e) {
+      return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build();    //404
+    }catch (Exception e) {
+      return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build();    //400
     }
   }
 
@@ -69,16 +74,13 @@ public class StudentController {
   @Path("/delete/{email}")
   public Response deleteUser(@PathParam("email") String email) {
     try {
-      LOGGER.info("--delete "+email);
       StudentModel studentModel = sal.removeStudent(email);
       return Response.ok(studentModel).build();
     } catch (EJBTransactionRolledbackException e) {
       return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Student with current email not found!\"}").build();//417
     } catch (RuntimeException e) {
-      LOGGER.info(e.toString());
       return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build();    //404
     }catch (Exception e) {
-      LOGGER.info(e.toString());
       return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build();    //400
     }
   }

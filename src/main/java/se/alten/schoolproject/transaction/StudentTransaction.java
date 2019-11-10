@@ -44,30 +44,13 @@ public class StudentTransaction implements StudentTransactionAccess{
 
     @Override
     public Student removeStudent(String email) {
-        LOGGER.info(email);
-        Student studentToRemove = new Student();
-        Student removedStudent = new Student();
-
-
-        studentToRemove = (Student)entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email")
+        //Student removedStudent = new Student();
+        Student removedStudent = (Student)entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email")
                 .setParameter("email", email).getSingleResult();
-
-        removedStudent.setId(studentToRemove.getId());
-        removedStudent.setForename((studentToRemove.getForename()));
-        removedStudent.setLastname(studentToRemove.getLastname());
-        removedStudent.setEmail(studentToRemove.getEmail());
-
-        LOGGER.info("111 "+removedStudent.toString());
-
-
         Query query = entityManager.createQuery("DELETE FROM Student s WHERE s.email = :email");
         query.setParameter("email", email)
              .executeUpdate();
-
-        LOGGER.info("222 "+removedStudent.toString());
-
         return removedStudent;
-
     }
 
     @Override
