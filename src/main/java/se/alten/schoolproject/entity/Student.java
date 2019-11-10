@@ -32,6 +32,8 @@ public class Student implements Serializable {
     @Column(name = "email", unique = true)
     private String email;
 
+    private String status;
+
     public Student toEntity(String studentModel) {
         JsonReader reader = Json.createReader(new StringReader(studentModel));
 
