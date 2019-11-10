@@ -2,6 +2,9 @@ package se.alten.schoolproject.model;
 
 import lombok.*;
 import se.alten.schoolproject.entity.Student;
+import se.alten.schoolproject.rest.StudentController;
+
+import java.util.logging.Logger;
 
 @Getter
 @Setter
@@ -15,7 +18,10 @@ public class StudentModel {
     private String lastname;
     private String email;
 
+    //private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
+
     public StudentModel toModel(Student student) {
+        //LOGGER.info(222+student.toString());
         StudentModel studentModel = new StudentModel();
         switch (student.getForename()) {
             case "empty":

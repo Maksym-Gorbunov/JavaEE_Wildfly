@@ -2,16 +2,19 @@ package se.alten.schoolproject.dao;
 
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.model.StudentModel;
+import se.alten.schoolproject.rest.StudentController;
 import se.alten.schoolproject.transaction.StudentTransactionAccess;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 @Stateless
 public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
+  private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
   private Student student = new Student();
   private StudentModel studentModel = new StudentModel();
 
@@ -38,8 +41,9 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   }
 
   @Override
-  public void removeStudent(String studentEmail) {
-    studentTransactionAccess.removeStudent(studentEmail);
+  public StudentModel removeStudent(String studentEmail) {
+    Student removedstudent = studentTransactionAccess.removeStudent(studentEmail);
+    return studentModel.toModel(removedstudent);
   }
 
   @Override
@@ -49,6 +53,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
   @Override
   public StudentModel updateStudentPartial(String studentBody) {
+
     Student studentToUpdate = student.toEntity(studentBody);
     boolean emptyBody =
             Stream.of(studentToUpdate.getForename(),
@@ -60,16 +65,12 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
       return studentModel.toModel(studentToUpdate);
     } else {
       studentTransactionAccess.updateStudentPartial(studentToUpdate);
-      return studentModel.toModel(studentToAdd);
+      return studentModel.toModel(studentToUpdate);
     }
-    StudentModel model =
-            Student studentToUpdate = student.toEntity(studentModel);
-    studentTransactionAccess.updateStudentPartial(studentToUpdate);
   }
 
   @Override
   public StudentModel findStudentByName(String forename) {
-    //studentTransactionAccess.findStudentByName(forename);
     Student temp = studentTransactionAccess.findStudentByName(forename);
     return studentModel.toModel(temp);
   }

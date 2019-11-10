@@ -12,7 +12,7 @@ public interface SchoolAccessLocal {
 
     StudentModel addStudent(String studentModel);
 
-    void removeStudent(String student);
+    StudentModel removeStudent(String student);
 
     void updateStudent(String forename, String lastname, String email);
 

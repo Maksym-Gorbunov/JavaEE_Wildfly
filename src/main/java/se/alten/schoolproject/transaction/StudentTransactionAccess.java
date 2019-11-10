@@ -9,7 +9,7 @@ import java.util.List;
 public interface StudentTransactionAccess {
     List listAllStudents();
     Student addStudent(Student studentToAdd);
-    void removeStudent(String student);
+    Student removeStudent(String student);
     void updateStudent(String forename, String lastname, String email);
     void updateStudentPartial(Student studentToUpdate);
     Student findStudentByName(String forename);

@@ -1,6 +1,7 @@
 package se.alten.schoolproject.transaction;
 
 import se.alten.schoolproject.entity.Student;
+import se.alten.schoolproject.rest.StudentController;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
@@ -9,10 +10,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Stateless
 @Default
+
+//JPQL Query
+
 public class StudentTransaction implements StudentTransactionAccess{
+
+    private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
 
     @PersistenceContext(unitName="school")
     private EntityManager entityManager;
@@ -36,15 +43,31 @@ public class StudentTransaction implements StudentTransactionAccess{
     }
 
     @Override
-    public void removeStudent(String student) {
-        //JPQL Query
+    public Student removeStudent(String email) {
+        LOGGER.info(email);
+        Student studentToRemove = new Student();
+        Student removedStudent = new Student();
+
+
+        studentToRemove = (Student)entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email")
+                .setParameter("email", email).getSingleResult();
+
+        removedStudent.setId(studentToRemove.getId());
+        removedStudent.setForename((studentToRemove.getForename()));
+        removedStudent.setLastname(studentToRemove.getLastname());
+        removedStudent.setEmail(studentToRemove.getEmail());
+
+        LOGGER.info("111 "+removedStudent.toString());
+
+
         Query query = entityManager.createQuery("DELETE FROM Student s WHERE s.email = :email");
-
-        //Native Query
-        //Query query = entityManager.createNativeQuery("DELETE FROM student WHERE email = :email", Student.class);
-
-        query.setParameter("email", student)
+        query.setParameter("email", email)
              .executeUpdate();
+
+        LOGGER.info("222 "+removedStudent.toString());
+
+        return removedStudent;
+
     }
 
     @Override
