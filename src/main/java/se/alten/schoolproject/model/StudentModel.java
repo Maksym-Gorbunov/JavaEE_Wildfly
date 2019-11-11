@@ -17,11 +17,19 @@ public class StudentModel {
     private String forename;
     private String lastname;
     private String email;
+    //private String status;
 
     //private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
 
+
+//    public StudentModel(String forename, String lastname, String email) {
+//        this.forename = forename;
+//        this.lastname = lastname;
+//        this.email = email;
+//    }
+
     public StudentModel toModel(Student student) {
-        //LOGGER.info(222+student.toString());
+        //StudentModel studentModel = new StudentModel(student.getForename(), student.getLastname(),student.getEmail());
         StudentModel studentModel = new StudentModel();
         switch (student.getForename()) {
             case "empty":

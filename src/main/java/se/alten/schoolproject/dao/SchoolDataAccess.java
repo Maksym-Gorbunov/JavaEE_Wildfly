@@ -22,16 +22,17 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   @Inject
   StudentTransactionAccess studentTransactionAccess;
 
+
   @Override
   public List listAllStudents() {
     return studentTransactionAccess.listAllStudents();
   }
 
+
   @Override
   public StudentModel addStudent(String studentBody) {
     Student studentToAdd = student.toEntity(studentBody);
     boolean checkForEmptyVariables = Stream.of(studentToAdd.getForename(), studentToAdd.getLastname(), studentToAdd.getEmail()).anyMatch(String::isBlank);
-
     if (checkForEmptyVariables) {
       studentToAdd.setForename("empty");
       return studentModel.toModel(studentToAdd);
@@ -41,16 +42,19 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
   }
 
+
   @Override
   public StudentModel removeStudent(String studentEmail) {
     Student removedstudent = studentTransactionAccess.removeStudent(studentEmail);
     return studentModel.toModel(removedstudent);
   }
 
+
   @Override
   public void updateStudent(String forename, String lastname, String email) {
     studentTransactionAccess.updateStudent(forename, lastname, email);
   }
+
 
   @Override
   public StudentModel updateStudentPartial(String studentBody) {
@@ -70,13 +74,20 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
   }
 
+
   @Override
-  public List<StudentModel> findStudentByName(String forename) {
-    List<Student> foundedStudents = studentTransactionAccess.findStudentByName(forename);
+  public List<StudentModel> findStudentsByName(String forename) {
+    List<Student> foundedStudents = studentTransactionAccess.findStudentsByName(forename);
     List<StudentModel> studentModels = new ArrayList<>();
     for(Student s : foundedStudents){
       studentModels.add(studentModel.toModel(s));
     }
     return studentModels;
+  }
+
+
+  public StudentModel findStudentByEmail(String email) {
+    Student foundedStudent = studentTransactionAccess.findStudentByEmail(email);
+    return studentModel.toModel(foundedStudent);
   }
 }

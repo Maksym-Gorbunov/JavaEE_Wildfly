@@ -26,4 +26,201 @@ It should say outcome success. Write `jboss-cli -c --command=:reload` to restart
 
 
 
+
+
+
+# API Documentation
+				    ---ADD---
+request type: Post
+______________________________________________________________________________________
+http://localhost:8080/javaEE_lab1/student/add
+body:
+{
+    "forename": "maks",
+    "lastname": "example",
+    "email": "maks.example@mail.com"
+}
+RESULT: 
+status: 200
+{
+    "forename": "maks",
+    "lastname": "example",
+    "email": "maks.example@mail.com"
+}
+______________________________________________________________________________________
+http://localhost:8080/javaEE_lab1/student/add
+body:
+{
+    "forename": "maks",
+    "lastname": "example",
+    "email": "maks.example@mail.com"
+}
+RESULT: 
+status: 417
+{
+    "Email already registered!"
+}
+______________________________________________________________________________________
+http://localhost:8080/javaEE_lab1/student/add
+body:
+{
+    "forename": "",
+    "lastname": "example",
+    "email": "maks.example@mail.com"
+}
+RESULT: 
+status: 406
+{
+    "Fill in all details please"
+}
+______________________________________________________________________________________
+Exception
+RESULT:
+{
+    "Oops. Server side error!"		
+}
+______________________________________________________________________________________
+		
+
+
+
+
+
+
+
+
+				     ---DELETE---
+request type: Delete
+______________________________________________________________________________________
+http://localhost:8080/javaEE_lab1/student/delete/maks@mail.com
+RESULT: 
+status: 200
+{
+    "id": null,
+    "forename": "maks",
+    "lastname": "example",
+    "email": "maks.example@mail.com"
+} 
+______________________________________________________________________________________
+http://localhost:8080/javaEE_lab1/student/delete/not_existed.example@mail.com
+RESULT: 
+status: 417
+{
+    "Student with current email not found!"
+}
+______________________________________________________________________________________
+Exception
+RESULT:
+{
+    "Oops. Server side error!"		
+}
+______________________________________________________________________________________
+		
+
+
+
+
+
+
+
+
+
+
+ 				      ---FIND BY NAME---
+request type: Get
+______________________________________________________________________________________
+http://localhost:8080/javaEE_lab1/student/find/name/maks
+RESULT: 
+status: 200
+[
+    {
+        "id": null,
+        "forename": "maks",
+        "lastname": "example",
+        "email": "maks.example@mail.com",
+        "status": null
+    }
+]
+______________________________________________________________________________________
+http://localhost:8080/javaEE_lab1/student/find/name/not_existed_name
+RESULT: 
+status: 200
+[]
+______________________________________________________________________________________
+Exception
+RESULT:
+{
+    "Oops. Server side error!"		
+}
+______________________________________________________________________________________
+		
+
+
+
+
+
+
+ 				---FIND BY EMAIL---
+request type: Get
+______________________________________________________________________________________
+http://localhost:8080/javaEE_lab1/student/find/email/maks.example@mail.com
+RESULT: 
+status: 200
+    {
+        "id": null,
+        "forename": "maks",
+        "lastname": "example",
+        "email": "maks.example@mail.com",
+        "status": null
+    }
+______________________________________________________________________________________
+http://localhost:8080/javaEE_lab1/student/find/email/not_existed_name
+RESULT: 
+status: 417
+{
+    "Student with current email not found"	
+}
+______________________________________________________________________________________
+Exception
+RESULT:
+{
+    "Oops. Server side error!"		
+}
+______________________________________________________________________________________
+		
+
+
+
+
+
+
+
+
+
+				    ---GET ALL---
+request type: Get
+______________________________________________________________________________________
+http://localhost:8080/javaEE_lab1/student	
+RESULT: 
+status: 200
+[
+    {
+        "id": 1,
+        "forename": "Max",
+        "lastname": "Fry",
+        "email": "max.fry@gmail.com"
+    },
+    {
+        "id": 44,
+        "forename": "maks",
+        "lastname": "example",
+        "email": "maks.example@mail.com"
+    },
+    ...
+]
+
+
+
+
+
  
