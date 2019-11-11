@@ -58,23 +58,38 @@ public class StudentTransaction implements StudentTransactionAccess {
 
 
   @Override
-  public void updateStudent(String forename, String lastname, String email) {
-    Query updateQuery = entityManager.createNativeQuery("UPDATE student SET forename = :forename, lastname = :lastname WHERE email = :email", Student.class);
-    updateQuery.setParameter("forename", forename)
+  public Student updateStudent(String forename, String lastname, String email) {
+//    Student studentToUpdate = (Student) entityManager
+//            .createQuery("SELECT s FROM Student s WHERE s.email = :email")
+//            .setParameter("email", email).getSingleResult();
+//    Query updateQuery = entityManager.createNativeQuery("UPDATE student SET forename = :forename, lastname = :lastname WHERE email = :email");
+//    updateQuery.setParameter("forename", forename)
+//            .setParameter("lastname", lastname)
+//            .setParameter("email", email)
+//            .executeUpdate();
+//    return studentToUpdate;
+    Student studentToUpdate = (Student) entityManager
+            .createQuery("SELECT s FROM Student s WHERE s.email = :email")
+            .setParameter("email", email).getSingleResult();
+    Query query = entityManager.createQuery("UPDATE Student SET forename = :forename, lastname = :lastname WHERE email = :email");
+    query.setParameter("forename", forename)
             .setParameter("lastname", lastname)
-            .setParameter("email", email)
+            .setParameter("email", studentToUpdate.getEmail())
             .executeUpdate();
+    return studentToUpdate;
   }
 
   @Override
-  public void updateStudentPartial(Student student) {
-    Student studentFound = (Student) entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email")
+  public Student updateStudentPartial(Student student) {
+    Student studentToUpdate = (Student) entityManager
+            .createQuery("SELECT s FROM Student s WHERE s.email = :email")
             .setParameter("email", student.getEmail()).getSingleResult();
-
-    Query query = entityManager.createQuery("UPDATE Student SET forename = :studentForename WHERE email = :email");
-    query.setParameter("studentForename", student.getForename())
-            .setParameter("email", studentFound.getEmail())
+    Query query = entityManager.createQuery("UPDATE Student SET forename = :forename, lastname = :lastname WHERE email = :email");
+    query.setParameter("forename", student.getForename())
+          .setParameter("lastname", student.getLastname())
+            .setParameter("email", studentToUpdate.getEmail())
             .executeUpdate();
+    return studentToUpdate;
   }
 
 

@@ -89,13 +89,36 @@ public class StudentController {
 
 
   @PUT
+  //@Consumes(MediaType.APPLICATION_JSON)
+  @Produces({"application/JSON"})
   @Path("/update")
-  public void updateStudent(@QueryParam("forename") String forename, @QueryParam("lastname") String lastname, @QueryParam("email") String email) {
-    sal.updateStudent(forename, lastname, email);
+  public Response updateStudent(@QueryParam("forename") String forename, @QueryParam("lastname") String lastname, @QueryParam("email") String email) {
+    try {
+      LOGGER.info("---update---");
+      LOGGER.info(forename +" / "+lastname+ " / " + email);
+      StudentModel studentModel = sal.updateStudent(forename, lastname, email);
+      LOGGER.info(studentModel.toString());
+      if (studentModel.getForename().equals("empty")) {
+        return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Fill in all details please\"}").build(); //406
+      }
+      return Response.ok(studentModel).build();
+    } catch (EJBTransactionRolledbackException | PersistenceException e) {
+      LOGGER.info("update: " + e.toString());
+      return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Student with current email not found!\"}").build(); //417
+    } catch (RuntimeException e) {
+      LOGGER.info("update: " + e.toString());
+      return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build(); //404
+    } catch (Exception e) {
+      LOGGER.info("update: " + e.toString());
+      return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build(); //400
+    }
   }
 
 
   @PATCH
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces({"application/JSON"})
+  @Path("/update/partial/")
   public Response updateStudentPartial(String studentBody) {
     try {
       LOGGER.info("---updateStudentPartial---");
@@ -161,3 +184,33 @@ public class StudentController {
 
 
 
+
+
+
+/*
+@PUT
+//  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces({"application/JSON"})
+  @Path("/update")
+  public Response updateStudent(@QueryParam("forename") String forename, @QueryParam("lastname") String lastname, @QueryParam("email") String email) {
+    try {
+      LOGGER.info("---update---");
+      LOGGER.info(forename +" / "+lastname+ " / " + email);
+      StudentModel studentModel = sal.updateStudent(forename, lastname, email);
+      LOGGER.info(studentModel.toString());
+      if (studentModel.getForename().equals("empty")) {
+        return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Fill in all details please\"}").build(); //406
+      }
+      return Response.ok(studentModel).build();
+    } catch (EJBTransactionRolledbackException | PersistenceException e) {
+      LOGGER.info("update: " + e.toString());
+      return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Student with current email not found!\"}").build(); //417
+    } catch (RuntimeException e) {
+      LOGGER.info("update: " + e.toString());
+      return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build(); //404
+    } catch (Exception e) {
+      LOGGER.info("update: " + e.toString());
+      return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build(); //400
+    }
+  }
+ */

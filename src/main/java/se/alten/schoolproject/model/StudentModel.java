@@ -4,6 +4,7 @@ import lombok.*;
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.rest.StudentController;
 
+import java.io.Serializable;
 import java.util.logging.Logger;
 
 @Getter
@@ -11,7 +12,7 @@ import java.util.logging.Logger;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class StudentModel {
+public class StudentModel implements Serializable {
 
     private Long id;
     private String forename;
@@ -22,11 +23,11 @@ public class StudentModel {
     //private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
 
 
-//    public StudentModel(String forename, String lastname, String email) {
-//        this.forename = forename;
-//        this.lastname = lastname;
-//        this.email = email;
-//    }
+    public StudentModel(String forename, String lastname, String email) {
+        this.forename = forename;
+        this.lastname = lastname;
+        this.email = email;
+    }
 
     public StudentModel toModel(Student student) {
         //StudentModel studentModel = new StudentModel(student.getForename(), student.getLastname(),student.getEmail());

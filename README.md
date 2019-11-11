@@ -223,4 +223,106 @@ status: 200
 
 
 
+
+****************************
+                            ---UPDATE---
+request type: Put
+______________________________________________________________________________________
+http://localhost:8080/javaEE_lab1/student/update?
+    forename=maks333
+    &lastname=example333
+    &email=maks.example@mail.com
+
+RESULT: 
+status: 200
+RESULT:
+{
+    "id": null,
+    "forename": "maks333",
+    "lastname": "example333",
+    "email": "maks.example@mail.com"
+}
+______________________________________________________________________________________
+http://localhost:8080/javaEE_lab1/student/update?
+    forename=maks333
+    &lastname=example333
+    &email=not_exist@mail.com
+
+RESULT: 
+status: 417
+RESULT:
+{
+    "Student with current email not found!"
+}
+______________________________________________________________________________________
+	
+ http://localhost:8080/javaEE_lab1/student/update?
+     forename=
+     &lastname=example333
+     &email=maks.example@mail.com
  
+ RESULT: 
+ status: 200
+ RESULT:
+ {
+     "Fill in all details please"
+ }
+ ______________________________________________________________________________________
+ 	
+  
+  
+  
+  
+
+
+                        ---UPDATE PARTIAL---
+request type: Patch
+______________________________________________________________________________________
+http://localhost:8080/javaEE_lab1/student/update/partial
+
+RESULT: 
+status: 200
+Body:
+{
+    "forename": "maks1111",
+    "lastname": "example1111",
+    "email": "maks.example@mail.com"
+}
+RESULT:
+{
+    "id": null,
+    "forename": "maks1111",
+    "lastname": "example1111",
+    "email": "maks.example@mail.com"
+}
+______________________________________________________________________________________
+http://localhost:8080/javaEE_lab1/student/update/partial
+
+RESULT: 
+status: 200
+Body:
+{
+    "lastname": "example1111",
+    "email": "maks.example@mail.com"
+}
+RESULT:
+{
+    "id": null,
+    "forename": "maks1111",
+    "lastname": "example1111",
+    "email": "maks.example@mail.com"
+}
+______________________________________________________________________________________
+	
+ http://localhost:8080/javaEE_lab1/student/update/partial
+ 
+ RESULT: 
+ status: 406
+ Body: {}
+ RESULT:
+ {
+     "Fill in all details please"
+ }
+ ______________________________________________________________________________________
+ 	
+  

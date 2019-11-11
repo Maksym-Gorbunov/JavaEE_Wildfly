@@ -51,14 +51,22 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
 
   @Override
-  public void updateStudent(String forename, String lastname, String email) {
-    studentTransactionAccess.updateStudent(forename, lastname, email);
+  public StudentModel updateStudent(String forename, String lastname, String email) {
+    Student studentToUpdate = new Student(forename, lastname, email);
+    boolean emptyField = Stream.of(forename, lastname, email)
+            .anyMatch(String::isBlank);
+    if (emptyField) {
+      studentToUpdate.setForename("empty");
+      return studentModel.toModel(studentToUpdate);
+    } else {
+      Student temp = studentTransactionAccess.updateStudent(forename, lastname, email);
+      return studentModel.toModel(studentToUpdate);
+    }
   }
 
 
   @Override
   public StudentModel updateStudentPartial(String studentBody) {
-
     Student studentToUpdate = student.toEntity(studentBody);
     boolean emptyBody =
             Stream.of(studentToUpdate.getForename(),
@@ -79,7 +87,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   public List<StudentModel> findStudentsByName(String forename) {
     List<Student> foundedStudents = studentTransactionAccess.findStudentsByName(forename);
     List<StudentModel> studentModels = new ArrayList<>();
-    for(Student s : foundedStudents){
+    for (Student s : foundedStudents) {
       studentModels.add(studentModel.toModel(s));
     }
     return studentModels;
@@ -91,3 +99,21 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     return studentModel.toModel(foundedStudent);
   }
 }
+
+
+
+/*
+@Override
+  public StudentModel updateStudent(String forename, String lastname, String email) {
+    StudentModel studentModelToUpdate = new StudentModel(forename, lastname, email);
+    boolean emptyField = Stream.of(forename, lastname, email)
+            .anyMatch(String::isBlank);
+    if (emptyField) {
+      studentModelToUpdate.setForename("empty");
+      return studentModelToUpdate;
+    } else {
+      Student temp = studentTransactionAccess.updateStudent(forename, lastname, email);
+      return studentModelToUpdate;
+    }
+  }
+ */

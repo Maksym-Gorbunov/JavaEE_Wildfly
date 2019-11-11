@@ -10,8 +10,8 @@ public interface StudentTransactionAccess {
     List listAllStudents();
     Student addStudent(Student studentToAdd);
     Student removeStudent(String student);
-    void updateStudent(String forename, String lastname, String email);
-    void updateStudentPartial(Student studentToUpdate);
+    Student updateStudent(String forename, String lastname, String email);
+    Student updateStudentPartial(Student studentToUpdate);
     List<Student> findStudentsByName(String forename);
     Student findStudentByEmail(String email);
 }
