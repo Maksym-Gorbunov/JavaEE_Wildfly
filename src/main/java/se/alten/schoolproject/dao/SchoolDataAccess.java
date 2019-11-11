@@ -7,6 +7,7 @@ import se.alten.schoolproject.transaction.StudentTransactionAccess;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -70,8 +71,12 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   }
 
   @Override
-  public StudentModel findStudentByName(String forename) {
-    Student temp = studentTransactionAccess.findStudentByName(forename);
-    return studentModel.toModel(temp);
+  public List<StudentModel> findStudentByName(String forename) {
+    List<Student> foundedStudents = studentTransactionAccess.findStudentByName(forename);
+    List<StudentModel> studentModels = new ArrayList<>();
+    for(Student s : foundedStudents){
+      studentModels.add(studentModel.toModel(s));
+    }
+    return studentModels;
   }
 }

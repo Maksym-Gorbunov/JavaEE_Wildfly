@@ -42,45 +42,48 @@ public class StudentController {
   @Path("/add")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces({"application/JSON"})
-  /**
-   * JavaDoc
-   */
   public Response addStudent(String studentBody) {
     try {
+      LOGGER.info("---delete---");
       StudentModel studentModel = sal.addStudent(studentBody);
-      //LOGGER.info(studentModel.toString());
-      //System.out.println("answer: " + studentModel);
-      switch (studentModel.getForename()) {
-        case "empty":
-          return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Fill in all details please\"}").build();  //406
-        case "duplicate":
-          return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Email already registered!\"}").build(); //417
-        default:
-          return Response.ok(studentModel).build();
+
+      if (studentModel.getForename().equals("empty")) {
+        return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Fill in all details please\"}").build();  //406
       }
-    }
-//    catch (EJBTransactionRolledbackException e) {
-//      return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Student already exist!\"}").build();//417
-//    }
-    catch (RuntimeException e) {
+      return Response.ok(studentModel).build();
+    } catch (
+            EJBTransactionRolledbackException e) {
+      LOGGER.info("add: " + e.toString());
+      return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Student already exist!\"}").build();//417
+    } catch (
+            RuntimeException e) {
+      LOGGER.info("add: " + e.toString());
       return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build();    //404
-    }catch (Exception e) {
+    } catch (
+            Exception e) {
+      LOGGER.info("add: " + e.toString());
       return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build();    //400
     }
+
   }
+
 
   @DELETE
   @Produces({"application/JSON"})
   @Path("/delete/{email}")
   public Response deleteUser(@PathParam("email") String email) {
     try {
+      LOGGER.info("---delete---");
       StudentModel studentModel = sal.removeStudent(email);
       return Response.ok(studentModel).build();
     } catch (EJBTransactionRolledbackException e) {
+      LOGGER.info("delete: " + e.toString());
       return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Student with current email not found!\"}").build();//417
     } catch (RuntimeException e) {
+      LOGGER.info("delete: " + e.toString());
       return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build();    //404
-    }catch (Exception e) {
+    } catch (Exception e) {
+      LOGGER.info("delete: " + e.toString());
       return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build();    //400
     }
   }
@@ -96,8 +99,24 @@ public class StudentController {
   }
 
   @PATCH
-  public void updatePartialAStudent(String studentModel) {
-    sal.updateStudentPartial(studentModel);
+  public Response updateStudentPartial(String studentBody) {
+    try {
+      LOGGER.info("---updateStudentPartial---");
+      StudentModel studentModel = sal.updateStudentPartial(studentBody);
+      if (studentModel.getForename().equals("empty")) {
+        return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Fill in all details please\"}").build();  //406
+      }
+      return Response.ok(studentModel).build();
+    } catch (EJBTransactionRolledbackException e) {
+      LOGGER.info("updateStudentPartial: " + e.toString());
+      return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Student with current email not found!\"}").build();//417
+    } catch (RuntimeException e) {
+      LOGGER.info("updateStudentPartial: " + e.toString());
+      return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build();    //404
+    } catch (Exception e) {
+      LOGGER.info("updateStudentPartial: " + e.toString());
+      return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build();    //400
+    }
   }
 
   @GET
@@ -105,11 +124,18 @@ public class StudentController {
   @Produces({"application/JSON"})
   public Response findStudentByName(@PathParam("name") String name) {
     try {
-      StudentModel studentModel = sal.findStudentByName(name);
-      LOGGER.info("111" + studentModel.toString());
-      return Response.ok(studentModel).build();
+      LOGGER.info("---findByName---");
+      List<StudentModel> studentModels = sal.findStudentByName(name);
+      return Response.ok(studentModels).build();
+    } catch (EJBTransactionRolledbackException e) {
+      LOGGER.info("findByName: " + e.toString());
+      return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Student with current email not found!\"}").build();//417
+    } catch (RuntimeException e) {
+      LOGGER.info("findByName: " + e.toString());
+      return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build();    //404
     } catch (Exception e) {
-      return Response.status(Response.Status.CONFLICT).build();
+      LOGGER.info("findByName: " + e.toString());
+      return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build();    //400
     }
   }
 }

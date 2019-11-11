@@ -12,5 +12,5 @@ public interface StudentTransactionAccess {
     Student removeStudent(String student);
     void updateStudent(String forename, String lastname, String email);
     void updateStudentPartial(Student studentToUpdate);
-    Student findStudentByName(String forename);
+    List<Student> findStudentByName(String forename);
 }

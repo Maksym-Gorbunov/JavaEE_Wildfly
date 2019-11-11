@@ -30,6 +30,7 @@ public class StudentTransaction implements StudentTransactionAccess{
         return query.getResultList();
     }
 
+
     @Override
     public Student addStudent(Student studentToAdd) {
         try {
@@ -42,16 +43,26 @@ public class StudentTransaction implements StudentTransactionAccess{
         }
     }
 
+
     @Override
     public Student removeStudent(String email) {
-        //Student removedStudent = new Student();
-        Student removedStudent = (Student)entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email")
-                .setParameter("email", email).getSingleResult();
-        Query query = entityManager.createQuery("DELETE FROM Student s WHERE s.email = :email");
-        query.setParameter("email", email)
-             .executeUpdate();
-        return removedStudent;
+      Student studentToRemove = new Student();
+      Student removedStudent = new Student();
+
+      studentToRemove = (Student)entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email")
+              .setParameter("email", email).getSingleResult();
+
+      removedStudent.setId(studentToRemove.getId());
+      removedStudent.setForename(studentToRemove.getForename());
+      removedStudent.setLastname(studentToRemove.getLastname());
+      removedStudent.setEmail(studentToRemove.getEmail());
+
+      Query query = entityManager.createQuery("DELETE FROM Student s WHERE s.email = :email");
+      query.setParameter("email", email)
+              .executeUpdate();
+      return removedStudent;
     }
+
 
     @Override
     public void updateStudent(String forename, String lastname, String email) {
@@ -73,10 +84,11 @@ public class StudentTransaction implements StudentTransactionAccess{
                 .executeUpdate();
     }
 
+
     @Override
-    public Student findStudentByName(String forename) {
-        Student studentFound = (Student)entityManager.createQuery("SELECT s FROM Student s WHERE s.forename = :forename")
-                .setParameter("forename", forename).getSingleResult();
-        return studentFound;
+    public List<Student> findStudentByName(String forename) {
+        List<Student> foundedStudents = entityManager.createQuery("SELECT s FROM Student s WHERE s.forename = :forename")
+                .setParameter("forename", forename).getResultList();
+        return foundedStudents;
     }
 }
