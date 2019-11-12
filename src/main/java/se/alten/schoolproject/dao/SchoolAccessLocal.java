@@ -1,6 +1,7 @@
 package se.alten.schoolproject.dao;
 
 import se.alten.schoolproject.model.StudentModel;
+import se.alten.schoolproject.model.SubjectModel;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.List;
 @Local
 public interface SchoolAccessLocal {
 
+
+    ///////////////////////////// Student ////////////////////////////
     List listAllStudents() throws Exception;
 
     StudentModel addStudent(String studentModel);
@@ -21,4 +24,10 @@ public interface SchoolAccessLocal {
     List<StudentModel> findStudentsByName(String forename);
 
     StudentModel findStudentByEmail(String email);
+
+    ///////////////////////////// Subject ////////////////////////////
+    List listAllSubjects();
+
+    SubjectModel addSubject(String subjectModel);
+
 }

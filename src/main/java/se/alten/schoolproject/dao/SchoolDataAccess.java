@@ -1,9 +1,12 @@
 package se.alten.schoolproject.dao;
 
 import se.alten.schoolproject.entity.Student;
+import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.model.StudentModel;
+import se.alten.schoolproject.model.SubjectModel;
 import se.alten.schoolproject.rest.StudentController;
 import se.alten.schoolproject.transaction.StudentTransactionAccess;
+import se.alten.schoolproject.transaction.SubjectTransactionAccess;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -18,9 +21,15 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
   private Student student = new Student();
   private StudentModel studentModel = new StudentModel();
+  private Subject subject = new Subject();
+  private SubjectModel subjectModel = new SubjectModel();
 
   @Inject
   StudentTransactionAccess studentTransactionAccess;
+
+  @Inject
+  SubjectTransactionAccess subjectTransactionAccess;
+
 
 
   @Override
@@ -98,6 +107,25 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     Student foundedStudent = studentTransactionAccess.findStudentByEmail(email);
     return studentModel.toModel(foundedStudent);
   }
+
+
+
+
+  @Override
+  public List listAllSubjects() {
+    return subjectTransactionAccess.listAllSubjects();
+  }
+
+  @Override
+  public SubjectModel addSubject(String newSubject) {
+    Subject subjectToAdd = subject.toEntity(newSubject);
+    subjectTransactionAccess.addSubject(subjectToAdd);
+    return subjectModel.toModel(subjectToAdd);
+  }
+
+
+
+
 }
 
 
@@ -117,3 +145,4 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
   }
  */
+
