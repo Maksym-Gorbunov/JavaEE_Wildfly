@@ -5,6 +5,10 @@ import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.rest.StudentController;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @Getter
@@ -18,16 +22,15 @@ public class StudentModel implements Serializable {
     private String forename;
     private String lastname;
     private String email;
-    //private String status;
 
     //private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
+    private Set<String> subjects = new HashSet<>();
 
-
-    public StudentModel(String forename, String lastname, String email) {
-        this.forename = forename;
-        this.lastname = lastname;
-        this.email = email;
-    }
+//    public StudentModel(String forename, String lastname, String email) {
+//        this.forename = forename;
+//        this.lastname = lastname;
+//        this.email = email;
+//    }
 
     public StudentModel toModel(Student student) {
         //StudentModel studentModel = new StudentModel(student.getForename(), student.getLastname(),student.getEmail());
@@ -43,7 +46,29 @@ public class StudentModel implements Serializable {
                 studentModel.setForename(student.getForename());
                 studentModel.setLastname(student.getLastname());
                 studentModel.setEmail(student.getEmail());
+                student.getSubject().forEach(subject -> {
+                    studentModel.subjects.add(subject.getTitle());
+                });
                 return studentModel;
         }
+    }
+
+
+    public List<StudentModel> toModelList(List<Student> students) {
+
+        List<StudentModel> studentModels = new ArrayList<>();
+
+        students.forEach(student -> {
+            StudentModel sm = new StudentModel();
+            sm.forename = student.getForename();
+            sm.lastname = student.getLastname();
+            sm.email = student.getEmail();
+            student.getSubject().forEach(subject -> {
+                sm.subjects.add(subject.getTitle());
+            });
+
+            studentModels.add(sm);
+        });
+        return studentModels;
     }
 }

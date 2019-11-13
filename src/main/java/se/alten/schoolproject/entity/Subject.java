@@ -11,11 +11,21 @@ import java.io.StringReader;
 import java.util.HashSet;
 import java.util.Set;
 
+//@Entity
+//@Getter
+//@Setter
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@ToString
+
+
+
 @Entity
-@Getter
-@Setter
+@Table(name="subject")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @ToString
 public class Subject implements Serializable {
 
