@@ -24,6 +24,7 @@ import java.util.Set;
 @ToString
 public class Student implements Serializable {
 
+    //toDo
     private static final long serialVersionUID = 1L;
 
     @Id
