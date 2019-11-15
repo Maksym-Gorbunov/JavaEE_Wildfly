@@ -43,18 +43,13 @@ public class Subject implements Serializable {
 
     public Subject toEntity(String subjectModel) {
         JsonReader reader = Json.createReader(new StringReader(subjectModel));
-
         JsonObject jsonObject = reader.readObject();
-
         Subject subject = new Subject();
-
         if ( jsonObject.containsKey("subject")) {
-
             subject.setTitle(jsonObject.getString("subject"));
         } else {
             subject.setTitle("");
         }
-
         return subject;
     }
 }
