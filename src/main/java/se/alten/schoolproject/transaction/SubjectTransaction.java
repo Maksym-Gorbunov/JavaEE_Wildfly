@@ -1,11 +1,15 @@
 package se.alten.schoolproject.transaction;
 
+import org.hibernate.Session;
+import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Stateless
 @Default

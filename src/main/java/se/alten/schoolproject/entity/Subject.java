@@ -1,5 +1,6 @@
 package se.alten.schoolproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.json.Json;
@@ -11,21 +12,11 @@ import java.io.StringReader;
 import java.util.HashSet;
 import java.util.Set;
 
-//@Entity
-//@Getter
-//@Setter
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@ToString
-
-
-
 @Entity
-@Table(name="subject")
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class Subject implements Serializable {
 
@@ -43,13 +34,18 @@ public class Subject implements Serializable {
 
     public Subject toEntity(String subjectModel) {
         JsonReader reader = Json.createReader(new StringReader(subjectModel));
+
         JsonObject jsonObject = reader.readObject();
+
         Subject subject = new Subject();
+
         if ( jsonObject.containsKey("subject")) {
+
             subject.setTitle(jsonObject.getString("subject"));
         } else {
             subject.setTitle("");
         }
+
         return subject;
     }
 }
