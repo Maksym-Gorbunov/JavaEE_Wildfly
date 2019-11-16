@@ -32,7 +32,7 @@ public class Student implements Serializable {
     @Column(name = "email", unique = true)
     private String email;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "student_subject",
                 joinColumns=@JoinColumn(name="stud_id", referencedColumnName = "id"),
                 inverseJoinColumns = @JoinColumn(name = "subj_id", referencedColumnName = "id"))
@@ -73,8 +73,8 @@ public class Student implements Serializable {
             student.setEmail("");
         }
 
-        if (jsonObject.containsKey("subject")) {
-            JsonArray jsonArray = jsonObject.getJsonArray("subject");
+        if (jsonObject.containsKey("subjects")) {
+            JsonArray jsonArray = jsonObject.getJsonArray("subjects");
             for ( int i = 0; i < jsonArray.size(); i++ ){
                 temp.add(jsonArray.get(i).toString().replace("\"", ""));
                 student.setSubjects(temp);
