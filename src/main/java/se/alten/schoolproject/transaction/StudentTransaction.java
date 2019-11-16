@@ -42,7 +42,7 @@ public class StudentTransaction implements StudentTransactionAccess {
 
 
   @Override
-  public Student removeStudent(String email) {
+  public Student deleteStudent(String email) {
     Student studentToRemove = new Student();
     Student removedStudent = new Student();
 

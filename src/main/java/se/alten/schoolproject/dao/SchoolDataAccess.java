@@ -4,17 +4,13 @@ import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.model.SubjectModel;
-import se.alten.schoolproject.rest.StudentController;
 import se.alten.schoolproject.transaction.StudentTransactionAccess;
 import se.alten.schoolproject.transaction.SubjectTransactionAccess;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 @Stateless
@@ -63,8 +59,8 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   }
 
   @Override
-  public StudentModel removeStudent(String studentEmail) {
-    Student removedstudent = studentTransactionAccess.removeStudent(studentEmail);
+  public StudentModel deleteStudent(String studentEmail) {
+    Student removedstudent = studentTransactionAccess.deleteStudent(studentEmail);
     return studentModel.toModel(removedstudent);
   }
 
@@ -140,6 +136,14 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     Subject subjectToAdd = subject.toEntity(subjectModel);
     subjectTransactionAccess.addSubject(subjectToAdd);
     return this.subjectModel.toModel(subjectToAdd);
+  }
+
+  @Override
+  public String deleteSubject(String title) {
+    if((title == null) || (title.isBlank())){
+      return "empty";
+    }
+    return  subjectTransactionAccess.deleteSubject(title);
   }
 
 

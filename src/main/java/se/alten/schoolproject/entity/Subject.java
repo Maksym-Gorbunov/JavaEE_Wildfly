@@ -21,32 +21,25 @@ import java.util.Set;
 public class Subject implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(unique = true)
     private String title;
 
     @ManyToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-
     private Set<Student> students = new HashSet<>();
 
     public Subject toEntity(String subjectModel) {
         JsonReader reader = Json.createReader(new StringReader(subjectModel));
-
         JsonObject jsonObject = reader.readObject();
-
         Subject subject = new Subject();
-
         if ( jsonObject.containsKey("subject")) {
-
             subject.setTitle(jsonObject.getString("subject"));
         } else {
             subject.setTitle("");
         }
-
         return subject;
     }
 }

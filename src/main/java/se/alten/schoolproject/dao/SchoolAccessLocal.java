@@ -9,23 +9,24 @@ import java.util.List;
 @Local
 public interface SchoolAccessLocal {
 
-    List listAllStudents() throws Exception;
+  List listAllStudents() throws Exception;
 
-    StudentModel addStudent(String studentModel);
+  StudentModel addStudent(String studentModel);
 
-    StudentModel removeStudent(String student);
+  StudentModel deleteStudent(String student);
 
-    StudentModel updateStudent(String forename, String lastname, String email);
+  StudentModel updateStudent(String forename, String lastname, String email);
 
-    StudentModel updateStudentPartial(String studentModel);
+  StudentModel updateStudentPartial(String studentModel);
 
-    List<StudentModel> findStudentsByName(String forename);
+  List<StudentModel> findStudentsByName(String forename);
 
-    StudentModel findStudentByEmail(String email);
+  StudentModel findStudentByEmail(String email);
 
 
+  List listAllSubjects();
 
-    List listAllSubjects();
+  SubjectModel addSubject(String subjectModel);
 
-    SubjectModel addSubject(String subjectModel);
+  String deleteSubject(String title);
 }

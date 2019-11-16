@@ -72,10 +72,10 @@ public class StudentController {
     @DELETE
     @Produces({"application/JSON"})
     @Path("/delete/{email}")
-    public Response deleteUser(@PathParam("email") String email) {
+    public Response deleteStudent(@PathParam("email") String email) {
         try {
             LOGGER.info("---delete---");
-            StudentModel studentModel = sal.removeStudent(email);
+            StudentModel studentModel = sal.deleteStudent(email);
             return Response.ok(studentModel).build();
         } catch (EJBTransactionRolledbackException | PersistenceException e) {
             LOGGER.info("delete: " + e.toString());
