@@ -13,6 +13,7 @@ import java.util.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Student implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,27 +41,31 @@ public class Student implements Serializable {
     @Transient
     private List<String> subjects = new ArrayList<>();
 
+    public Student(String forename, String lastname, String email) {
+        this.forename = forename;
+        this.lastname = lastname;
+        this.email = email;
+    }
+
+
+
     public Student toEntity(String studentModel) {
 
         List<String> temp = new ArrayList<>();
 
         JsonReader reader = Json.createReader(new StringReader(studentModel));
-
         JsonObject jsonObject = reader.readObject();
-
         Student student = new Student();
         if ( jsonObject.containsKey("forename")) {
             student.setForename(jsonObject.getString("forename"));
         } else {
             student.setForename("");
         }
-
         if ( jsonObject.containsKey("lastname")) {
             student.setLastname(jsonObject.getString("lastname"));
         } else {
             student.setLastname("");
         }
-
         if ( jsonObject.containsKey("email")) {
             student.setEmail(jsonObject.getString("email"));
         } else {
@@ -79,4 +84,6 @@ public class Student implements Serializable {
 
         return student;
     }
+
+
 }

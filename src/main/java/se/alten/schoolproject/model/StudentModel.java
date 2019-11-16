@@ -13,8 +13,10 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class StudentModel {
+
+    //private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
+
 
     private String forename;
     private String lastname;
