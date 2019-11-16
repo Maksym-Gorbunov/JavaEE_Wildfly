@@ -3,12 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.javaEE_lab1</groupId>
-    <artifactId>javaEE_lab1</artifactId>
+    <groupId>com.javaEnterprise</groupId>
+    <artifactId>javaEnterprise</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>javaEE_lab1</name>
+    <name>javaEnterprise</name>
     <description>A small JEE tutorial</description>
 
     <developers>
@@ -93,7 +93,7 @@
     </dependencies>
 
     <build>
-        <finalName>javaEE_lab1</finalName>
+        <finalName>javaEnterprise</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
             <plugin>
