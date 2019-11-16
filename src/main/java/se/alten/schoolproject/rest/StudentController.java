@@ -27,7 +27,9 @@ public class StudentController {
     //return all students
     @GET
     @Produces({"application/JSON"})
-    public Response showStudents() {
+    public Response listAllStudents() {
+        System.out.println("listAllStudents() - Controller");
+//        LOGGER.info("listAllStudents() - Controller");
         try {
             List students = sal.listAllStudents();
             return Response.ok(students).build();

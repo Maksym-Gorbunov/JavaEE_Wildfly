@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 @Default
 public class StudentTransaction implements StudentTransactionAccess {
 
-  private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
+  //private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
 
   @PersistenceContext(unitName = "school")
   private EntityManager entityManager;
@@ -25,6 +25,8 @@ public class StudentTransaction implements StudentTransactionAccess {
 
   @Override
   public List listAllStudents() {
+    System.out.println("listAllStudents() - Transaction");
+  //LOGGER.info("listAllStudents() - Transaction");
   Query query = entityManager.createQuery("SELECT s FROM Student s JOIN FETCH s.subject t");
 //    Query query = entityManager.createQuery("SELECT s from Student s");
     return query.getResultList();

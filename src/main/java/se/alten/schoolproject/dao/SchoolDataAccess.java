@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 @Stateless
 public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
-  //private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
+//  private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
 
 
   private Student student = new Student();
@@ -38,6 +38,8 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
   @Override
   public List listAllStudents() {
+//    LOGGER.info("listAllStudents() - SDA");
+    System.out.println("listAllStudents() - SDA");
     List<StudentModel> sm = studentModel.toModelList(studentTransactionAccess.listAllStudents());
     return sm;
   }
@@ -127,6 +129,8 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
   @Override
   public List listAllSubjects() {
+    System.out.println("listAllSubjects() - SDA");
+//    LOGGER.info("listAllSubjects() - SDA");
     List<SubjectModel> sm = subjectModel.toModelList(subjectTransactionAccess.listAllSubjects());
     return sm;
     //return subjectTransactionAccess.listAllSubjects();

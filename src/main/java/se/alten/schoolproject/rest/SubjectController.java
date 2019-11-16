@@ -10,11 +10,14 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Stateless
 @NoArgsConstructor
 @Path("/subject")
 public class SubjectController {
+
+    private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
 
     @Inject
     private SchoolAccessLocal sal;
@@ -22,6 +25,8 @@ public class SubjectController {
     @GET
     @Produces({"application/JSON"})
     public Response listSubjects() {
+        System.out.println("listAllSubjects() - Controller");
+//        LOGGER.info("listAllSubjects() - Controller");
         try {
             List subject = sal.listAllSubjects();
             return Response.ok(subject).build();
