@@ -49,19 +49,15 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   public StudentModel addStudent(String newStudent) {
     Student studentToAdd = student.toEntity(newStudent);
     boolean checkForEmptyVariables = Stream.of(studentToAdd.getForename(), studentToAdd.getLastname(), studentToAdd.getEmail()).anyMatch(String::isBlank);
-
     if (checkForEmptyVariables) {
       studentToAdd.setForename("empty");
       return studentModel.toModel(studentToAdd);
     } else {
       studentTransactionAccess.addStudent(studentToAdd);
-
       List<Subject> subjects = subjectTransactionAccess.getSubjectByName(studentToAdd.getSubjects());
-
       subjects.forEach(sub -> {
         studentToAdd.getSubject().add(sub);
       });
-
       return studentModel.toModel(studentToAdd);
     }
   }
@@ -130,17 +126,20 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   @Override
   public List listAllSubjects() {
     System.out.println("listAllSubjects() - SDA");
-//    LOGGER.info("listAllSubjects() - SDA");
+    //LOGGER.info("listAllSubjects() - SDA");
     List<SubjectModel> sm = subjectModel.toModelList(subjectTransactionAccess.listAllSubjects());
-    return sm;
     //return subjectTransactionAccess.listAllSubjects();
+    return sm;
   }
 
   @Override
-  public SubjectModel addSubject(String newSubject) {
-    Subject subjectToAdd = subject.toEntity(newSubject);
+  public SubjectModel addSubject(String subjectModel) {
+    if(subjectModel.isBlank()){
+      return new SubjectModel("empty");
+    }
+    Subject subjectToAdd = subject.toEntity(subjectModel);
     subjectTransactionAccess.addSubject(subjectToAdd);
-    return subjectModel.toModel(subjectToAdd);
+    return this.subjectModel.toModel(subjectToAdd);
   }
 
 

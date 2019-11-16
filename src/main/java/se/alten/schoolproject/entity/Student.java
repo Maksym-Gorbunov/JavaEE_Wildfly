@@ -32,10 +32,11 @@ public class Student implements Serializable {
     @Column(name = "email", unique = true)
     private String email;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(name = "student_subject",
                 joinColumns=@JoinColumn(name="stud_id", referencedColumnName = "id"),
                 inverseJoinColumns = @JoinColumn(name = "subj_id", referencedColumnName = "id"))
+
     private Set<Subject> subject = new HashSet<>();
 
     @Transient
@@ -86,4 +87,18 @@ public class Student implements Serializable {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Student student = (Student) o;
+
+        return email.equals(student.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return email.hashCode();
+    }
 }
