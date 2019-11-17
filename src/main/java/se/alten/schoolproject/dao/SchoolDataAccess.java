@@ -146,6 +146,19 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     return  subjectTransactionAccess.deleteSubject(title);
   }
 
+  @Override
+  public List<StudentModel> listStudentsBySubject(String subject) {
+    if((subject == null) || (subject.isBlank())){
+      return null;
+    }
+    List<StudentModel> studentModels = new ArrayList<>();
+    List<Student> students = studentTransactionAccess.listStudentsBySubject(subject);
+    for (Student s : students) {
+      studentModels.add(studentModel.toModel(s));
+    }
+    return studentModels;
+  }
+
 
 }
 

@@ -29,4 +29,6 @@ public interface SchoolAccessLocal {
   SubjectModel addSubject(String subjectModel);
 
   String deleteSubject(String title);
+
+  List<StudentModel> listStudentsBySubject(String subject);
 }

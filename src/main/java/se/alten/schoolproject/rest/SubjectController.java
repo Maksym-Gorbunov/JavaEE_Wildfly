@@ -2,6 +2,7 @@ package se.alten.schoolproject.rest;
 
 import lombok.NoArgsConstructor;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
+import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.model.SubjectModel;
 
 import javax.ejb.EJBTransactionRolledbackException;
@@ -89,5 +90,9 @@ public class SubjectController {
       return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build(); //400
     }
   }
+
+
+
+
 
 }

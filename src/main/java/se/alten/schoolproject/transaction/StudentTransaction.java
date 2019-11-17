@@ -1,17 +1,13 @@
 package se.alten.schoolproject.transaction;
 
 import se.alten.schoolproject.entity.Student;
-import se.alten.schoolproject.rest.StudentController;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Stateless
 @Default
@@ -20,22 +16,22 @@ public class StudentTransaction implements StudentTransactionAccess {
   //private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
 
   @PersistenceContext(unitName = "school")
-  private EntityManager entityManager;
+  private EntityManager em;
 
 
   @Override
   public List listAllStudents() {
     System.out.println("listAllStudents() - Transaction");
-    Query query = entityManager.createQuery("SELECT s FROM Student s JOIN FETCH s.subject t");
-    //Query query = entityManager.createQuery("SELECT s from Student s");
+    Query query = em.createQuery("SELECT s FROM Student s JOIN FETCH s.subject t");
+    //Query query = em.createQuery("SELECT s from Student s");
     return query.getResultList();
   }
 
 
   @Override
   public Student addStudent(Student studentToAdd) {
-    entityManager.persist(studentToAdd);
-    entityManager.flush();
+    em.persist(studentToAdd);
+    em.flush();
     return studentToAdd;
   }
 
@@ -45,7 +41,7 @@ public class StudentTransaction implements StudentTransactionAccess {
     Student studentToRemove = new Student();
     Student removedStudent = new Student();
 
-    studentToRemove = (Student) entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email")
+    studentToRemove = (Student) em.createQuery("SELECT s FROM Student s WHERE s.email = :email")
             .setParameter("email", email).getSingleResult();
 
     removedStudent.setId(studentToRemove.getId());
@@ -53,7 +49,7 @@ public class StudentTransaction implements StudentTransactionAccess {
     removedStudent.setLastname(studentToRemove.getLastname());
     removedStudent.setEmail(studentToRemove.getEmail());
 
-    Query query = entityManager.createQuery("DELETE FROM Student s WHERE s.email = :email");
+    Query query = em.createQuery("DELETE FROM Student s WHERE s.email = :email");
     query.setParameter("email", email)
             .executeUpdate();
     return removedStudent;
@@ -62,19 +58,19 @@ public class StudentTransaction implements StudentTransactionAccess {
 
   @Override
   public Student updateStudent(String forename, String lastname, String email) {
-//    Student studentToUpdate = (Student) entityManager
+//    Student studentToUpdate = (Student) em
 //            .createQuery("SELECT s FROM Student s WHERE s.email = :email")
 //            .setParameter("email", email).getSingleResult();
-//    Query updateQuery = entityManager.createNativeQuery("UPDATE student SET forename = :forename, lastname = :lastname WHERE email = :email");
+//    Query updateQuery = em.createNativeQuery("UPDATE student SET forename = :forename, lastname = :lastname WHERE email = :email");
 //    updateQuery.setParameter("forename", forename)
 //            .setParameter("lastname", lastname)
 //            .setParameter("email", email)
 //            .executeUpdate();
 //    return studentToUpdate;
-    Student studentToUpdate = (Student) entityManager
+    Student studentToUpdate = (Student) em
             .createQuery("SELECT s FROM Student s WHERE s.email = :email")
             .setParameter("email", email).getSingleResult();
-    Query query = entityManager.createQuery("UPDATE Student SET forename = :forename, lastname = :lastname WHERE email = :email");
+    Query query = em.createQuery("UPDATE Student SET forename = :forename, lastname = :lastname WHERE email = :email");
     query.setParameter("forename", forename)
             .setParameter("lastname", lastname)
             .setParameter("email", studentToUpdate.getEmail())
@@ -84,10 +80,10 @@ public class StudentTransaction implements StudentTransactionAccess {
 
   @Override
   public Student updateStudentPartial(Student student) {
-    Student studentToUpdate = (Student) entityManager
+    Student studentToUpdate = (Student) em
             .createQuery("SELECT s FROM Student s WHERE s.email = :email")
             .setParameter("email", student.getEmail()).getSingleResult();
-    Query query = entityManager.createQuery("UPDATE Student SET forename = :forename, lastname = :lastname WHERE email = :email");
+    Query query = em.createQuery("UPDATE Student SET forename = :forename, lastname = :lastname WHERE email = :email");
     query.setParameter("forename", student.getForename())
             .setParameter("lastname", student.getLastname())
             .setParameter("email", studentToUpdate.getEmail())
@@ -98,7 +94,7 @@ public class StudentTransaction implements StudentTransactionAccess {
 
   @Override
   public List<Student> findStudentsByName(String forename) {
-    List<Student> foundedStudents = entityManager.createQuery("SELECT s FROM Student s WHERE s.forename = :forename")
+    List<Student> foundedStudents = em.createQuery("SELECT s FROM Student s WHERE s.forename = :forename")
             .setParameter("forename", forename).getResultList();
     return foundedStudents;
   }
@@ -106,12 +102,32 @@ public class StudentTransaction implements StudentTransactionAccess {
 
   public Student findStudentByEmail(String email) {
     /* JPQL query
-    Student foundedStudent = (Student) entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email")
+    Student foundedStudent = (Student) em.createQuery("SELECT s FROM Student s WHERE s.email = :email")
             .setParameter("email", email).getSingleResult(); */
     //typed query
 
-    Student foundedStudent = entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email", Student.class)
+    Student foundedStudent = em.createQuery("SELECT s FROM Student s WHERE s.email = :email", Student.class)
             .setParameter("email", email).getSingleResult();
     return foundedStudent;
+  }
+
+
+  @Override
+  public List<Student> listStudentsBySubject(String subj) {
+    try {
+      System.out.println("***********************" + subj + "****************************");
+      Query query = em.createQuery("SELECT s FROM Student s JOIN FETCH s.subject t WHERE t.title=:subj");
+      query.setParameter("subj", subj);
+      List<Student> res = query.getResultList();
+
+      System.out.println("*************************  "+res.size()+"  *********************************");
+
+      //res.forEach(s -> System.out.println("**************" + s + "**************"));
+
+      return res;
+    } catch (Exception e) {
+      System.out.println("*************************************************** " + e.getClass().getSimpleName());
+    }
+    return null;
   }
 }
