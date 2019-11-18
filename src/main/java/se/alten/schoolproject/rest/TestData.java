@@ -97,7 +97,6 @@ public class TestData {
   private void populateSubjects(){
     List<String> subjects = new ArrayList<>();
     subjects.add("{\"subject\":\"Javascript\"}");
-    subjects.add("{\"subject\":\"Javascript\"}");
     subjects.add("{\"subject\":\"Python\"}");
     subjects.add("{\"subject\":\"Ruby\"}");
     subjects.add("{\"subject\":\"ML\"}");
