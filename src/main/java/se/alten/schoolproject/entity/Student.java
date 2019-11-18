@@ -42,6 +42,16 @@ public class Student implements Serializable {
     @Transient
     private List<String> subjects = new ArrayList<>();
 
+
+    ////////////////for teacher ???/////////////////////////
+    @ManyToMany(mappedBy = "student", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Set<Teacher> teachers = new HashSet<>();
+    /////////////////////////////////////////
+
+
+
+
+
     public Student(String forename, String lastname, String email) {
         this.forename = forename;
         this.lastname = lastname;

@@ -23,7 +23,6 @@ public class StudentTransaction implements StudentTransactionAccess {
   public List listAllStudents() {
     System.out.println("listAllStudents() - Transaction");
     Query query = em.createQuery("SELECT s FROM Student s JOIN FETCH s.subject t");
-    //Query query = em.createQuery("SELECT s from Student s");
     return query.getResultList();
   }
 
@@ -58,15 +57,6 @@ public class StudentTransaction implements StudentTransactionAccess {
 
   @Override
   public Student updateStudent(String forename, String lastname, String email) {
-//    Student studentToUpdate = (Student) em
-//            .createQuery("SELECT s FROM Student s WHERE s.email = :email")
-//            .setParameter("email", email).getSingleResult();
-//    Query updateQuery = em.createNativeQuery("UPDATE student SET forename = :forename, lastname = :lastname WHERE email = :email");
-//    updateQuery.setParameter("forename", forename)
-//            .setParameter("lastname", lastname)
-//            .setParameter("email", email)
-//            .executeUpdate();
-//    return studentToUpdate;
     Student studentToUpdate = (Student) em
             .createQuery("SELECT s FROM Student s WHERE s.email = :email")
             .setParameter("email", email).getSingleResult();
@@ -101,11 +91,6 @@ public class StudentTransaction implements StudentTransactionAccess {
 
 
   public Student findStudentByEmail(String email) {
-    /* JPQL query
-    Student foundedStudent = (Student) em.createQuery("SELECT s FROM Student s WHERE s.email = :email")
-            .setParameter("email", email).getSingleResult(); */
-    //typed query
-
     Student foundedStudent = em.createQuery("SELECT s FROM Student s WHERE s.email = :email", Student.class)
             .setParameter("email", email).getSingleResult();
     return foundedStudent;
@@ -114,20 +99,18 @@ public class StudentTransaction implements StudentTransactionAccess {
 
   @Override
   public List<Student> listStudentsBySubject(String subj) {
-    try {
-      System.out.println("***********************" + subj + "****************************");
       Query query = em.createQuery("SELECT s FROM Student s JOIN FETCH s.subject t WHERE t.title=:subj");
       query.setParameter("subj", subj);
       List<Student> res = query.getResultList();
-
-      System.out.println("*************************  "+res.size()+"  *********************************");
-
-      //res.forEach(s -> System.out.println("**************" + s + "**************"));
-
       return res;
-    } catch (Exception e) {
-      System.out.println("*************************************************** " + e.getClass().getSimpleName());
-    }
-    return null;
   }
+
+
 }
+
+
+
+/* JPQL query
+    Student foundedStudent = (Student) em.createQuery("SELECT s FROM Student s WHERE s.email = :email")
+            .setParameter("email", email).getSingleResult(); */
+//typed query

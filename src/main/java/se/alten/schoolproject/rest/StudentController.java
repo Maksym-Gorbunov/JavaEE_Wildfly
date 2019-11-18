@@ -194,11 +194,19 @@ public class StudentController {
         System.out.println("listStudentsBySubject() - Controller");
         try {
             List<StudentModel> studentModels = sal.listStudentsBySubject(subject);
-            //return Response.ok().entity("{\"********!\"}").build();
+            if(studentModels.size() == 0){
+                return Response.status(Response.Status.CONFLICT).entity("{\"Subject not exist!\"}").build();
+            }
             return Response.ok(studentModels).build();
+        } catch (EJBTransactionRolledbackException | PersistenceException e) {
+            System.out.println("listStudentsBySubject: " + e.getClass().getSimpleName());
+            return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Students with current subject not found!\"}").build(); //417
+        } catch (RuntimeException e) {
+            LOGGER.info("listStudentsBySubject: " + e.getClass().getSimpleName());
+            return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build(); //404
         } catch (Exception e) {
-            LOGGER.info(e.getClass().getSimpleName());
-            return Response.status(Response.Status.CONFLICT).entity("{\"Oops. Server side error!\"}").build();
+            LOGGER.info("listStudentsBySubject: " + e.getClass().getSimpleName());
+            return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build(); //400
         }
     }
 
