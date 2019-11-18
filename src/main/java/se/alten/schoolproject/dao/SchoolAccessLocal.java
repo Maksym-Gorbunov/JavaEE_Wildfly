@@ -2,6 +2,7 @@ package se.alten.schoolproject.dao;
 
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.model.SubjectModel;
+import se.alten.schoolproject.model.TeacherModel;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -31,4 +32,8 @@ public interface SchoolAccessLocal {
   String deleteSubject(String title);
 
   List<StudentModel> listStudentsBySubject(String subject);
+
+  public List listAllTeachers();
+
+  TeacherModel addTeacher(String teacherBody);
 }

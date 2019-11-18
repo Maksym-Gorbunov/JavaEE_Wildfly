@@ -44,8 +44,8 @@ public class Student implements Serializable {
 
 
     ////////////////for teacher ???/////////////////////////
-    @ManyToMany(mappedBy = "student", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private Set<Teacher> teachers = new HashSet<>();
+//    @ManyToMany(mappedBy = "student", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+//    private Set<Teacher> teachers = new HashSet<>();
     /////////////////////////////////////////
 
 

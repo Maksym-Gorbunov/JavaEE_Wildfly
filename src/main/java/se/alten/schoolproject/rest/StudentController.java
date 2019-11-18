@@ -46,7 +46,7 @@ public class StudentController {
     @Produces({"application/JSON"})
     public Response addStudent(String studentBody) {
         try {
-            LOGGER.info("---delete---");
+            LOGGER.info("---add---");
             StudentModel studentModel = sal.addStudent(studentBody);
 
             if (studentModel.getForename().equals("empty")) {

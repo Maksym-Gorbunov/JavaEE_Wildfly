@@ -32,15 +32,17 @@ public class Teacher implements Serializable {
   @Column(name = "email", unique = true)
   private String email;
 
-  @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-  @JoinTable(name = "teacher_student",
-          joinColumns=@JoinColumn(name="teach_id", referencedColumnName = "id"),
-          inverseJoinColumns = @JoinColumn(name = "stud_id", referencedColumnName = "id"))
+//  @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+//  @JoinTable(name = "teacher_student",
+//          joinColumns=@JoinColumn(name="teach_id", referencedColumnName = "id"),
+//          inverseJoinColumns = @JoinColumn(name = "stud_id", referencedColumnName = "id"))
 
-  private Set<Subject> student = new HashSet<>();
+
+//  private Set<Subject> student = new HashSet<>();
 
   @Transient
   private List<String> students = new ArrayList<>();
+
 
   public Teacher(String forename, String lastname, String email) {
     this.forename = forename;
@@ -52,7 +54,7 @@ public class Teacher implements Serializable {
 
   public Teacher toEntity(String teacherModel) {
 
-    List<String> temp = new ArrayList<>();
+    List<Teacher> temp = new ArrayList<>();
 
     JsonReader reader = Json.createReader(new StringReader(teacherModel));
     JsonObject jsonObject = reader.readObject();
@@ -73,19 +75,26 @@ public class Teacher implements Serializable {
       teacher.setEmail("");
     }
 
-    if (jsonObject.containsKey("students")) {
-      JsonArray jsonArray = jsonObject.getJsonArray("students");
-      for ( int i = 0; i < jsonArray.size(); i++ ){
-        temp.add(jsonArray.get(i).toString().replace("\"", ""));
-        teacher.setStudents(temp);
-
-        ///////////////// set subjects for each student /////////////
-
-
-      }
-    } else {
-      teacher.setStudents(null);
-    }
+//    if (jsonObject.containsKey("students")) {
+//      JsonArray jsonArray = jsonObject.getJsonArray("students");
+//      for ( int i = 0; i < jsonArray.size(); i++ ){
+//        temp.add(jsonArray.get(i).toString().replace("\"", ""));
+//        student.se .setSubjects(temp);
+//      }
+//    } else {
+//      student.setSubjects(null);
+//    }
+//
+//
+//    if (jsonObject.containsKey("subjects")) {
+//      JsonArray jsonArray = jsonObject.getJsonArray("subjects");
+//      for ( int i = 0; i < jsonArray.size(); i++ ){
+//        temp.add(jsonArray.get(i).toString().replace("\"", ""));
+//        student.setSubjects(temp);
+//      }
+//    } else {
+//      student.setSubjects(null);
+//    }
 
     return teacher;
   }

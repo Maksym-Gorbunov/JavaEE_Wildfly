@@ -2,10 +2,13 @@ package se.alten.schoolproject.dao;
 
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
+import se.alten.schoolproject.entity.Teacher;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.model.SubjectModel;
+import se.alten.schoolproject.model.TeacherModel;
 import se.alten.schoolproject.transaction.StudentTransactionAccess;
 import se.alten.schoolproject.transaction.SubjectTransactionAccess;
+import se.alten.schoolproject.transaction.TeacherTransactionAccess;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -21,20 +24,23 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
   private Student student = new Student();
   private StudentModel studentModel = new StudentModel();
+
   private Subject subject = new Subject();
   private SubjectModel subjectModel = new SubjectModel();
 
+  private Teacher teacher = new Teacher();
+  private TeacherModel teacherModel = new TeacherModel();
+
   @Inject
   StudentTransactionAccess studentTransactionAccess;
-
   @Inject
   SubjectTransactionAccess subjectTransactionAccess;
-
+  @Inject
+  TeacherTransactionAccess teacherTransactionAccess;
 
 
   @Override
   public List listAllStudents() {
-//    LOGGER.info("listAllStudents() - SDA");
     System.out.println("listAllStudents() - SDA");
     List<StudentModel> sm = studentModel.toModelList(studentTransactionAccess.listAllStudents());
     return sm;
@@ -57,6 +63,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
       return studentModel.toModel(studentToAdd);
     }
   }
+
 
   @Override
   public StudentModel deleteStudent(String studentEmail) {
@@ -98,9 +105,6 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   }
 
 
-
-
-
   @Override
   public List<StudentModel> findStudentsByName(String forename) {
     List<Student> foundedStudents = studentTransactionAccess.findStudentsByName(forename);
@@ -128,9 +132,10 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     return sm;
   }
 
+
   @Override
   public SubjectModel addSubject(String subjectModel) {
-    if(subjectModel.isBlank()){
+    if (subjectModel.isBlank()) {
       return new SubjectModel("empty");
     }
     Subject subjectToAdd = subject.toEntity(subjectModel);
@@ -138,17 +143,19 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     return this.subjectModel.toModel(subjectToAdd);
   }
 
+
   @Override
   public String deleteSubject(String title) {
-    if((title == null) || (title.isBlank())){
+    if ((title == null) || (title.isBlank())) {
       return "empty";
     }
-    return  subjectTransactionAccess.deleteSubject(title);
+    return subjectTransactionAccess.deleteSubject(title);
   }
+
 
   @Override
   public List<StudentModel> listStudentsBySubject(String subject) {
-    if((subject == null) || (subject.isBlank())){
+    if ((subject == null) || (subject.isBlank())) {
       return null;
     }
     List<StudentModel> studentModels = new ArrayList<>();
@@ -159,6 +166,31 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     return studentModels;
   }
 
+  /////////////////////////////// Teacher ////////////////////////////////////////
+
+  @Override
+  public List listAllTeachers() {
+    System.out.println("listAllTeachers() - SDA");
+    List<TeacherModel> tm = teacherModel.toModelList(teacherTransactionAccess.listAllTeachers());
+    return tm;
+  }
+
+  @Override
+  public TeacherModel addTeacher(String teacherBody) {
+    Teacher teacherToAdd = teacher.toEntity(teacherBody);
+    boolean checkForEmptyVariables = Stream.of(teacherToAdd.getForename(), teacherToAdd.getLastname(), teacherToAdd.getEmail()).anyMatch(String::isBlank);
+    if (checkForEmptyVariables) {
+      teacherToAdd.setForename("empty");
+      return teacherModel.toModel(teacherToAdd);
+    } else {
+      teacherTransactionAccess.addTeacher(teacherToAdd);
+//      List<Subject> subjects = subjectTransactionAccess.getSubjectByName(studentToAdd.getSubjects());
+//      subjects.forEach(sub -> {
+//        studentToAdd.getSubject().add(sub);
+//      });
+      return teacherModel.toModel(teacherToAdd);
+    }
+  }
 
 }
 

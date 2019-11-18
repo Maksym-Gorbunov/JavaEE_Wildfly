@@ -22,7 +22,8 @@ public class TeacherModel {
   private String forename;
   private String lastname;
   private String email;
-  private Set<String> students = new HashSet<>();
+//  private Set<String> students = new HashSet<>();
+//  private Set<String> subjects = new HashSet<>();
 
   public TeacherModel toModel(Teacher teacher) {
     TeacherModel teacherModel = new TeacherModel();
@@ -38,9 +39,9 @@ public class TeacherModel {
         teacherModel.setForename(teacher.getForename());
         teacherModel.setLastname(teacher.getLastname());
         teacherModel.setEmail(teacher.getEmail());
-        teacher.getStudent().forEach(student -> {
-          teacherModel.students.add(student.getTitle());
-        });
+//        teacher.getStudent().forEach(student -> {
+//          teacherModel.students.add(student.getTitle());
+//        });
         return teacherModel;
     }
   }
@@ -54,9 +55,9 @@ public class TeacherModel {
       tm.forename = teacher.getForename();
       tm.lastname = teacher.getLastname();
       tm.email = teacher.getEmail();
-      teacher.getStudent().forEach(student -> {
-        tm.students.add(student.getTitle());
-      });
+//      teacher.getStudent().forEach(student -> {
+//        tm.students.add(student.getTitle());
+//      });
 
       teacherModels.add(tm);
     });
