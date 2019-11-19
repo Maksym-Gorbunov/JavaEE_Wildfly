@@ -2,6 +2,7 @@ package se.alten.schoolproject.transaction;
 
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
+import se.alten.schoolproject.entity.Teacher;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
@@ -10,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 @Default
@@ -22,10 +24,14 @@ public class StudentTransaction implements StudentTransactionAccess {
 
 
   @Override
-  public List listAllStudents() {
+  public List<Student> listAllStudents() {
     System.out.println("listAllStudents() - Transaction");
     Query query = em.createQuery("SELECT s FROM Student s JOIN FETCH s.subject t");
-    return query.getResultList();
+    List<Student> temp = query.getResultList();
+    List<Student> result = temp.stream()
+            .distinct()
+            .collect(Collectors.toList());
+    return result;
   }
 
 
