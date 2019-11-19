@@ -1,12 +1,14 @@
 package se.alten.schoolproject.transaction;
 
 import se.alten.schoolproject.entity.Student;
+import se.alten.schoolproject.entity.Subject;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Stateless
@@ -104,6 +106,16 @@ public class StudentTransaction implements StudentTransactionAccess {
       List<Student> res = query.getResultList();
       return res;
   }
+
+
+  @Override
+  public List<Student> getStudentsByEmail(List<String> emailList) {
+    String queryStr = "SELECT stud FROM Student stud WHERE stud.email IN :emailList";
+    TypedQuery<Student> query = em.createQuery(queryStr, Student.class);
+    query.setParameter("emailList", emailList);
+    return query.getResultList();
+  }
+
 
 
 }

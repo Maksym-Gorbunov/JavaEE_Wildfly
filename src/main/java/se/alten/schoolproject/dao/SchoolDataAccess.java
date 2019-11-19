@@ -175,8 +175,10 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     return tm;
   }
 
+
   @Override
   public TeacherModel addTeacher(String teacherBody) {
+    System.out.println("addTeacher() - SDA");
     Teacher teacherToAdd = teacher.toEntity(teacherBody);
     boolean checkForEmptyVariables = Stream.of(teacherToAdd.getForename(), teacherToAdd.getLastname(), teacherToAdd.getEmail()).anyMatch(String::isBlank);
     if (checkForEmptyVariables) {
@@ -184,13 +186,12 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
       return teacherModel.toModel(teacherToAdd);
     } else {
       teacherTransactionAccess.addTeacher(teacherToAdd);
-//      List<Subject> subjects = subjectTransactionAccess.getSubjectByName(studentToAdd.getSubjects());
-//      subjects.forEach(sub -> {
-//        studentToAdd.getSubject().add(sub);
-//      });
+      List<Student> students = studentTransactionAccess.getStudentsByEmail(teacherToAdd.getStudents());
+      students.forEach(stud -> {
+        teacherToAdd.getStudent().add(stud);
+      });
       return teacherModel.toModel(teacherToAdd);
     }
   }
 
 }
-

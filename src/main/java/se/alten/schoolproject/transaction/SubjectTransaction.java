@@ -33,6 +33,8 @@ public class SubjectTransaction implements SubjectTransactionAccess {
     return subject;
   }
 
+
+  //change subject to tiltle
   @Override
   public List<Subject> getSubjectByName(List<String> subject) {
     String queryStr = "SELECT sub FROM Subject sub WHERE sub.title IN :subject";

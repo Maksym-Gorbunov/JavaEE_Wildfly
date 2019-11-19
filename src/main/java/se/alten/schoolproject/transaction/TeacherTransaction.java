@@ -15,7 +15,8 @@ public class TeacherTransaction  implements TeacherTransactionAccess{
   @Override
   public List listAllTeachers() {
     System.out.println("listAllTeachers() - Transaction");
-    Query query = em.createQuery("SELECT t FROM Teacher t");
+    //Query query = em.createQuery("SELECT t FROM Teacher t");
+    Query query = em.createQuery("SELECT t FROM Teacher t JOIN FETCH t.student");
     return query.getResultList();
   }
 

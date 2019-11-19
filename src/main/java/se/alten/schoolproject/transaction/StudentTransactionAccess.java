@@ -16,4 +16,6 @@ public interface StudentTransactionAccess {
     Student findStudentByEmail(String email);
 
   List<Student> listStudentsBySubject(String subj);
+
+  List<Student> getStudentsByEmail(List<String> emailList);
 }

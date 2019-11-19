@@ -43,9 +43,9 @@ public class TeacherController {
   @Path("/add")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces({"application/JSON"})
-  public Response addStudent(String teacherBody) {
+  public Response addTeacher(String teacherBody) {
     try {
-      System.out.println("---add---");
+      System.out.println("addTeacher() - Controller");
       TeacherModel teacherModel = sal.addTeacher(teacherBody);
 
       //if (studentModel.getForename().equals("empty")) {
@@ -54,15 +54,15 @@ public class TeacherController {
       return Response.ok(teacherModel).build();
     } catch (
             EJBTransactionRolledbackException | PersistenceException e) {
-      LOGGER.info("add: " + e.toString());
-      return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Student already exist!\"}").build(); //417
+      System.out.println("add: " + e.getClass().getSimpleName());
+      return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Teacher already exist!\"}").build(); //417
     } catch (
             RuntimeException e) {
-      LOGGER.info("add: " + e.toString());
+      System.out.println("add: " + e.getClass().getSimpleName());
       return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build(); //404
     } catch (
             Exception e) {
-      LOGGER.info("add: " + e.toString());
+      System.out.println("add: " + e.getClass().getSimpleName());
       return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build(); //400
     }
 

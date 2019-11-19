@@ -37,9 +37,11 @@ public class StudentModel {
                 studentModel.setForename(student.getForename());
                 studentModel.setLastname(student.getLastname());
                 studentModel.setEmail(student.getEmail());
+
                 student.getSubject().forEach(subject -> {
                     studentModel.subjects.add(subject.getTitle());
                 });
+
                 return studentModel;
         }
     }
