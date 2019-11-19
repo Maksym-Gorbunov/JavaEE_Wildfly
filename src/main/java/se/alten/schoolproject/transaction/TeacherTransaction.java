@@ -18,7 +18,7 @@ public class TeacherTransaction implements TeacherTransactionAccess {
   public List<Teacher> listAllTeachers() {
     System.out.println("listAllTeachers() - Transaction");
     //Query query = em.createQuery("SELECT t FROM Teacher t");
-    Query query = em.createQuery("SELECT t FROM Teacher t JOIN FETCH t.student");
+    Query query = em.createQuery("SELECT t FROM Teacher t JOIN FETCH t.student JOIN FETCH t.subject");
     List<Teacher> temp = query.getResultList();
     List<Teacher> result = temp.stream()
             .distinct()

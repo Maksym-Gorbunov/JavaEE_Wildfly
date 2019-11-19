@@ -32,6 +32,10 @@ public class Subject implements Serializable {
     @ManyToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Student> students = new HashSet<>();
 
+    //@ManyToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    //private Set<Teacher> teachers = new HashSet<>();
+
+
     public Subject toEntity(String subjectModel) {
         JsonReader reader = Json.createReader(new StringReader(subjectModel));
         JsonObject jsonObject = reader.readObject();
@@ -43,4 +47,5 @@ public class Subject implements Serializable {
         }
         return subject;
     }
+
 }

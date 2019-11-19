@@ -36,10 +36,10 @@ public class SubjectTransaction implements SubjectTransactionAccess {
 
   //change subject to tiltle
   @Override
-  public List<Subject> getSubjectByName(List<String> subject) {
-    String queryStr = "SELECT sub FROM Subject sub WHERE sub.title IN :subject";
+  public List<Subject> getSubjectByName(List<String> titleList) {
+    String queryStr = "SELECT sub FROM Subject sub WHERE sub.title IN :titleList";
     TypedQuery<Subject> query = em.createQuery(queryStr, Subject.class);
-    query.setParameter("subject", subject);
+    query.setParameter("titleList", titleList);
     return query.getResultList();
   }
 

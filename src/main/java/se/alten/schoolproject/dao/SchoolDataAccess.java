@@ -32,17 +32,17 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   private TeacherModel teacherModel = new TeacherModel();
 
   @Inject
-  StudentTransactionAccess studentTransactionAccess;
+  StudentTransactionAccess studentTA;
   @Inject
-  SubjectTransactionAccess subjectTransactionAccess;
+  SubjectTransactionAccess subjectTA;
   @Inject
-  TeacherTransactionAccess teacherTransactionAccess;
+  TeacherTransactionAccess teacherTA;
 
 
   @Override
   public List listAllStudents() {
     System.out.println("listAllStudents() - SDA");
-    List<StudentModel> sm = studentModel.toModelList(studentTransactionAccess.listAllStudents());
+    List<StudentModel> sm = studentModel.toModelList(studentTA.listAllStudents());
     return sm;
   }
 
@@ -55,8 +55,8 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
       studentToAdd.setForename("empty");
       return studentModel.toModel(studentToAdd);
     } else {
-      studentTransactionAccess.addStudent(studentToAdd);
-      List<Subject> subjects = subjectTransactionAccess.getSubjectByName(studentToAdd.getSubjects());
+      studentTA.addStudent(studentToAdd);
+      List<Subject> subjects = subjectTA.getSubjectByName(studentToAdd.getSubjects());
       subjects.forEach(sub -> {
         studentToAdd.getSubject().add(sub);
       });
@@ -67,7 +67,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
   @Override
   public StudentModel deleteStudent(String studentEmail) {
-    Student removedstudent = studentTransactionAccess.deleteStudent(studentEmail);
+    Student removedstudent = studentTA.deleteStudent(studentEmail);
     return studentModel.toModel(removedstudent);
   }
 
@@ -81,7 +81,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
       studentToUpdate.setForename("empty");
       return studentModel.toModel(studentToUpdate);
     } else {
-      Student temp = studentTransactionAccess.updateStudent(forename, lastname, email);
+      Student temp = studentTA.updateStudent(forename, lastname, email);
       return studentModel.toModel(studentToUpdate);
     }
   }
@@ -99,7 +99,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
       studentToUpdate.setForename("empty");
       return studentModel.toModel(studentToUpdate);
     } else {
-      studentTransactionAccess.updateStudentPartial(studentToUpdate);
+      studentTA.updateStudentPartial(studentToUpdate);
       return studentModel.toModel(studentToUpdate);
     }
   }
@@ -107,7 +107,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
   @Override
   public List<StudentModel> findStudentsByName(String forename) {
-    List<Student> foundedStudents = studentTransactionAccess.findStudentsByName(forename);
+    List<Student> foundedStudents = studentTA.findStudentsByName(forename);
     List<StudentModel> studentModels = new ArrayList<>();
     for (Student s : foundedStudents) {
       studentModels.add(studentModel.toModel(s));
@@ -117,7 +117,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
 
   public StudentModel findStudentByEmail(String email) {
-    Student foundedStudent = studentTransactionAccess.findStudentByEmail(email);
+    Student foundedStudent = studentTA.findStudentByEmail(email);
     return studentModel.toModel(foundedStudent);
   }
 
@@ -127,8 +127,8 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   public List listAllSubjects() {
     System.out.println("listAllSubjects() - SDA");
     //LOGGER.info("listAllSubjects() - SDA");
-    List<SubjectModel> sm = subjectModel.toModelList(subjectTransactionAccess.listAllSubjects());
-    //return subjectTransactionAccess.listAllSubjects();
+    List<SubjectModel> sm = subjectModel.toModelList(subjectTA.listAllSubjects());
+    //return subjectTA.listAllSubjects();
     return sm;
   }
 
@@ -139,7 +139,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
       return new SubjectModel("empty");
     }
     Subject subjectToAdd = subject.toEntity(subjectModel);
-    subjectTransactionAccess.addSubject(subjectToAdd);
+    subjectTA.addSubject(subjectToAdd);
     return this.subjectModel.toModel(subjectToAdd);
   }
 
@@ -149,7 +149,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     if ((title == null) || (title.isBlank())) {
       return "empty";
     }
-    return subjectTransactionAccess.deleteSubject(title);
+    return subjectTA.deleteSubject(title);
   }
 
 
@@ -159,7 +159,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
       return null;
     }
     List<StudentModel> studentModels = new ArrayList<>();
-    List<Student> students = studentTransactionAccess.listStudentsBySubject(subject);
+    List<Student> students = studentTA.listStudentsBySubject(subject);
     for (Student s : students) {
       studentModels.add(studentModel.toModel(s));
     }
@@ -171,7 +171,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   @Override
   public List listAllTeachers() {
     System.out.println("listAllTeachers() - SDA");
-    List<TeacherModel> tm = teacherModel.toModelList(teacherTransactionAccess.listAllTeachers());
+    List<TeacherModel> tm = teacherModel.toModelList(teacherTA.listAllTeachers());
     return tm;
   }
 
@@ -185,11 +185,18 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
       teacherToAdd.setForename("empty");
       return teacherModel.toModel(teacherToAdd);
     } else {
-      teacherTransactionAccess.addTeacher(teacherToAdd);
-      List<Student> students = studentTransactionAccess.getStudentsByEmail(teacherToAdd.getStudents());
+      teacherTA.addTeacher(teacherToAdd);
+
+      List<Student> students = studentTA.getStudentsByEmail(teacherToAdd.getStudents());
       students.forEach(stud -> {
         teacherToAdd.getStudent().add(stud);
       });
+
+      List<Subject> subjects = subjectTA.getSubjectByName(teacherToAdd.getSubjects());
+      subjects.forEach(subj -> {
+        teacherToAdd.getSubject().add(subj);
+      });
+
       return teacherModel.toModel(teacherToAdd);
     }
   }
