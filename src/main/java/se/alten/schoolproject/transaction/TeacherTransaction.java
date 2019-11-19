@@ -3,6 +3,7 @@ package se.alten.schoolproject.transaction;
 import se.alten.schoolproject.entity.Teacher;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
@@ -32,5 +33,17 @@ public class TeacherTransaction implements TeacherTransactionAccess {
     em.persist(teacherToAdd);
     em.flush();
     return teacherToAdd;
+  }
+
+
+  @Override
+  public String deleteTeacher(String email) {
+    Query query = em.createQuery("DELETE FROM Teacher t WHERE t.email = :email");
+    query.setParameter("email", email);
+    int rowsDeleted = query.executeUpdate();
+    if (rowsDeleted < 1) {
+      throw new NoResultException();
+    }
+    return email;
   }
 }

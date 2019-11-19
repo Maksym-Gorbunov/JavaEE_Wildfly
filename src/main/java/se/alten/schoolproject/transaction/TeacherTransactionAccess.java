@@ -8,4 +8,6 @@ public interface TeacherTransactionAccess {
   public List listAllTeachers();
 
   Teacher addTeacher(Teacher teacherToAdd);
+
+  String deleteTeacher(String mail);
 }

@@ -201,4 +201,12 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
   }
 
+
+  @Override
+  public String deleteTeacher(String mail) {
+    if ((mail == null) || (mail.isBlank())) {
+      return "empty";
+    }
+    return teacherTA.deleteTeacher(mail);
+  }
 }

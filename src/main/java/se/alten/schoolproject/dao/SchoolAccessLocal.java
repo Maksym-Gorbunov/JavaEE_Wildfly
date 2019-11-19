@@ -36,4 +36,6 @@ public interface SchoolAccessLocal {
   public List listAllTeachers();
 
   TeacherModel addTeacher(String teacherBody);
+
+  String deleteTeacher(String email);
 }
