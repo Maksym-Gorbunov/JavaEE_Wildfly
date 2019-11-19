@@ -21,11 +21,11 @@ public class TeacherModel {
   private String lastname;
   private String email;
   private Set<String> students = new HashSet<>();
-  //private Set<String> subjects = new HashSet<>();
+  private Set<String> subjects = new HashSet<>();
+
 
   public TeacherModel toModel(Teacher teacher) {
     TeacherModel teacherModel = new TeacherModel();
-    StudentModel studentModel = new StudentModel();
 
     switch (teacher.getForename()) {
       case "empty":
@@ -43,31 +43,23 @@ public class TeacherModel {
           teacherModel.students.add(stud.getEmail());
         });
 
+        teacher.getSubject().forEach(subj -> {
+          teacherModel.subjects.add(subj.getTitle());
+        });
 
         return teacherModel;
     }
   }
 
+
   public List<TeacherModel> toModelList(List<Teacher> teachers) {
-
     List<TeacherModel> teacherModels = new ArrayList<>();
-
     teachers.forEach(teacher -> {
-
-
       TeacherModel tm = new TeacherModel();
-
       tm = toModel(teacher);
-
-//      tm.forename = teacher.getForename();
-//      tm.lastname = teacher.getLastname();
-//      tm.email = teacher.getEmail();
-//      teacher.getStudent().forEach(student -> {
-//        tm.students.add(student.getTitle());
-//      });
-
       teacherModels.add(tm);
     });
+
     return teacherModels;
   }
 }
