@@ -56,8 +56,15 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     if (subjectBody.isBlank()) {
       return new SubjectModel("empty");
     }
-    Subject subj = subject.toEntity(subjectBody);
-    Subject dbResponse = subjectTA.addSubject(subj);
+    Subject subjectToAdd = subject.toEntity(subjectBody);
+    Subject dbResponse = subjectTA.addSubject(subjectToAdd);
+
+    List<Student> students = studentTA.getStudentsByEmail(subjectToAdd.getStudents());
+
+    students.forEach(stud -> {
+      subjectToAdd.getStudent().add(stud);
+    });
+
     return this.subjectModel.toModel(dbResponse);
   }
 

@@ -1,6 +1,7 @@
 package se.alten.schoolproject.transaction;
 
 import se.alten.schoolproject.entity.Student;
+import se.alten.schoolproject.entity.Subject;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
@@ -86,10 +87,19 @@ public class StudentTransaction implements StudentTransactionAccess {
   }
 
 
+  @Override
   public Student findStudentByEmail(String email) {
     Student foundedStudent = em.createQuery("SELECT s FROM Student s WHERE s.email = :email", Student.class)
             .setParameter("email", email).getSingleResult();
     return foundedStudent;
   }
 
+
+  @Override
+  public List<Student> getStudentsByEmail(List<String> emails) {
+    String queryStr = "SELECT stud FROM Student stud WHERE stud.email IN :emails";
+    TypedQuery<Student> query = em.createQuery(queryStr, Student.class);
+    query.setParameter("emails", emails);
+    return query.getResultList();
+  }
 }

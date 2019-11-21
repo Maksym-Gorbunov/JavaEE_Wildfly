@@ -40,6 +40,10 @@ public class Student implements Serializable {
 
 
 
+    @ManyToMany(mappedBy = "student", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Set<Subject> subjects = new HashSet<>();
+
+
 
     public Student(String forename, String lastname, String email) {
         this.forename = forename;
@@ -67,6 +71,8 @@ public class Student implements Serializable {
         } else {
             student.setEmail("");
         }
+
+
 
 
 
