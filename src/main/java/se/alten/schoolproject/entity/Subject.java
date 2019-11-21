@@ -34,7 +34,7 @@ public class Subject implements Serializable {
 
     //@ManyToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     //private Set<Teacher> teachers = new HashSet<>();
-
+    /////
 
     public Subject toEntity(String subjectModel) {
         JsonReader reader = Json.createReader(new StringReader(subjectModel));
