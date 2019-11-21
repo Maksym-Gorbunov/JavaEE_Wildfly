@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name="student")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -39,15 +38,8 @@ public class Student implements Serializable {
     @Column(name = "email", unique = true)
     private String email;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinTable(name = "student_subject",
-                joinColumns=@JoinColumn(name="stud_id", referencedColumnName = "id"),
-                inverseJoinColumns = @JoinColumn(name = "subj_id", referencedColumnName = "id"))
 
-    private Set<Subject> subject = new HashSet<>();
 
-    @Transient
-    private List<String> subjects = new ArrayList<>();
 
     public Student(String forename, String lastname, String email) {
         this.forename = forename;
@@ -57,7 +49,6 @@ public class Student implements Serializable {
 
 
     public Student toEntity(String studentModel) {
-        List<String> temp = new ArrayList<>();
         JsonReader reader = Json.createReader(new StringReader(studentModel));
         JsonObject jsonObject = reader.readObject();
         Student student = new Student();
@@ -77,15 +68,7 @@ public class Student implements Serializable {
             student.setEmail("");
         }
 
-        if (jsonObject.containsKey("subjects")) {
-            JsonArray jsonArray = jsonObject.getJsonArray("subjects");
-            for ( int i = 0; i < jsonArray.size(); i++ ){
-                temp.add(jsonArray.get(i).toString().replace("\"", ""));
-                student.setSubjects(temp);
-            }
-        } else {
-            student.setSubjects(null);
-        }
+
 
         return student;
     }
@@ -95,9 +78,7 @@ public class Student implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Student student = (Student) o;
-
         return email.equals(student.email);
     }
 
