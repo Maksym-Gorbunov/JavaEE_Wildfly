@@ -30,7 +30,7 @@ public class StudentController {
     @GET
     @Produces({"application/JSON"})
     public Response getStudents() {
-        LOGGER.info("Controller: getStudents()");
+        LOGGER.info("Controller: getTransientStudents()");
         try {
             List<StudentModel> result = sal.getStudents();
             return Response.ok(result).build();

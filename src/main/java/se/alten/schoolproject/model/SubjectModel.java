@@ -32,7 +32,7 @@ public class SubjectModel {
         SubjectModel subjectModel = new SubjectModel();
         subjectModel.setTitle(subjectToAdd.getTitle());
 
-        subjectToAdd.getStudent().forEach(stud -> {
+        subjectToAdd.getJoinedStudents().forEach(stud -> {
             subjectModel.students.add(stud.getEmail());
         });
 
@@ -45,7 +45,7 @@ public class SubjectModel {
         subjects.forEach(subj -> {
             SubjectModel sm = toModel(subj);
 
-            subj.getStudent().forEach(stud -> {
+            subj.getJoinedStudents().forEach(stud -> {
                 sm.students.add(stud.getEmail());
             });
 

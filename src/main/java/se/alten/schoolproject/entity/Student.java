@@ -3,15 +3,12 @@ package se.alten.schoolproject.entity;
 import lombok.*;
 
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -40,8 +37,8 @@ public class Student implements Serializable {
 
 
 
-    @ManyToMany(mappedBy = "student", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private Set<Subject> subjects = new HashSet<>();
+    @ManyToMany(mappedBy = "joinedStudents", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Set<Subject> joinedSubjects = new HashSet<>();
 
 
 

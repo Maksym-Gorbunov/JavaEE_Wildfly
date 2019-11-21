@@ -59,11 +59,14 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     Subject subjectToAdd = subject.toEntity(subjectBody);
     Subject dbResponse = subjectTA.addSubject(subjectToAdd);
 
-    List<Student> students = studentTA.getStudentsByEmail(subjectToAdd.getStudents());
 
-    students.forEach(stud -> {
-      subjectToAdd.getStudent().add(stud);
-    });
+    // bind subject with transientStudents, ?? not need in add method
+    if (subjectToAdd.getTransientStudents() != null) {
+      List<Student> students = studentTA.getStudentsByEmail(subjectToAdd.getTransientStudents());
+      students.forEach(stud -> {
+        subjectToAdd.getJoinedStudents().add(stud);
+      });
+    }
 
     return this.subjectModel.toModel(dbResponse);
   }
@@ -125,7 +128,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
   @Override
   public List<StudentModel> getStudents() {
-    System.out.println("getStudents() - SDA");
+    System.out.println("getTransientStudents() - SDA");
     List<Student> dbResponse = studentTA.getStudents();
     return studentModel.toModelList(dbResponse);
   }
@@ -209,9 +212,6 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   ///////////////////////////////////// Student end ///////////////////////////////////////////
 
 
-
-
-
   //////////////////////////////////// Teacher start //////////////////////////////////////////
 
   @Override
@@ -246,7 +246,6 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
     return teacherTA.deleteTeacher(email);
   }
-
 
 
 //TEACHER UPDATE

@@ -40,10 +40,10 @@ public class Subject implements Serializable {
     @JoinTable(name = "subject_student",
             joinColumns=@JoinColumn(name="subject_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"))
-    private Set<Student> student = new HashSet<>();
+    private Set<Student> joinedStudents = new HashSet<>();
 
     @Transient
-    private List<String> students = new ArrayList<>();
+    private List<String> transientStudents = new ArrayList<>();
 
 
     public Subject toEntity(String subjectBody) {
@@ -57,15 +57,15 @@ public class Subject implements Serializable {
         }
 
         List<String> tempStudents = new ArrayList<>();
-        if (jsonObject.containsKey("students")) {
-            JsonArray jsonArray = jsonObject.getJsonArray("students");
+        if (jsonObject.containsKey("transientStudents")) {
+            JsonArray jsonArray = jsonObject.getJsonArray("transientStudents");
             for ( int i = 0; i < jsonArray.size(); i++ ){
 
                 tempStudents.add(jsonArray.get(i).toString().replace("\"", ""));
             }
-            subject.setStudents(tempStudents);
+            subject.setTransientStudents(tempStudents);
         } else {
-            subject.setStudents(null);
+            subject.setTransientStudents(null);
         }
 
         return subject;

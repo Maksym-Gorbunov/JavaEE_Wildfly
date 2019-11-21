@@ -21,7 +21,7 @@ public class StudentTransaction implements StudentTransactionAccess {
 
   @Override
   public List<Student> getStudents() {
-    System.out.println("getStudents() - Transaction");
+    System.out.println("getTransientStudents() - Transaction");
     Query query = em.createQuery("SELECT s FROM Student s");
     List<Student> temp = query.getResultList();
 //    List<Student> result = temp.stream()
