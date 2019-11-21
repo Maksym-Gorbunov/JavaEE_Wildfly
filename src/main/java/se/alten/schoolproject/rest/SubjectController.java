@@ -74,6 +74,9 @@ public class SubjectController {
       if (result.equals("empty")) {
         return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Can't delete subject with empty title!\"}").build(); //406
       }
+      if (result.equals("")) {
+        return Response.status(Response.Status.NOT_FOUND).entity("{\"Subject not found!\"}").build(); //406
+      }
       return Response.ok().entity("{\"Subject \"" + result + "\" was deleted from database!\"}").build();
     } catch (NoResultException e) {
       LOGGER.info("deleteSubject: " + e.getClass().getSimpleName());

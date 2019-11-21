@@ -7,7 +7,7 @@ Small project for teaching purposes.
 * Java 11
 * Git
 * Maven
-* MySQL
+* MySQL / JPQL
 
 ## Wildfly configuration
 

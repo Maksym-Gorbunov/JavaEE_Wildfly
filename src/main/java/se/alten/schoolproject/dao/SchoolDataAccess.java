@@ -2,10 +2,13 @@ package se.alten.schoolproject.dao;
 
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
+import se.alten.schoolproject.entity.Teacher;
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.model.SubjectModel;
+import se.alten.schoolproject.model.TeacherModel;
 import se.alten.schoolproject.transaction.StudentTransactionAccess;
 import se.alten.schoolproject.transaction.SubjectTransactionAccess;
+import se.alten.schoolproject.transaction.TeacherTransactionAccess;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -31,6 +34,10 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   @Inject
   StudentTransactionAccess studentTA;
 
+  private Teacher teacher = new Teacher();
+  private TeacherModel teacherModel = new TeacherModel();
+  @Inject
+  TeacherTransactionAccess teacherTA;
 
 
   //////////////////////////////////// Subject start //////////////////////////////////////////
@@ -88,7 +95,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
     if (jsonObject.containsKey("subjects")) {
       JsonArray jsonArray = jsonObject.getJsonArray("subjects");
-      for(JsonValue title : jsonArray){
+      for (JsonValue title : jsonArray) {
         titleList.add(title.toString().replace("\"", ""));
       }
     }
@@ -107,94 +114,187 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   //////////////////////////////////// Subject end //////////////////////////////////////////
 
 
-
-
   //////////////////////////////////// Student start //////////////////////////////////////////
 
   @Override
-  public List listAllStudents() {
+  public List<StudentModel> getStudents() {
     System.out.println("getStudents() - SDA");
-    List<StudentModel> sm = studentModel.toModelList(studentTA.getStudents());
-    return sm;
+    List<Student> dbResponse = studentTA.getStudents();
+    return studentModel.toModelList(dbResponse);
   }
 
 
   @Override
-  public StudentModel addStudent(String newStudent) {
-    Student studentToAdd = student.toEntity(newStudent);
+  public StudentModel addStudent(String studentBody) {
+    Student studentToAdd = student.toEntity(studentBody);
     boolean checkForEmptyVariables = Stream.of(studentToAdd.getForename(), studentToAdd.getLastname(), studentToAdd.getEmail()).anyMatch(String::isBlank);
     if (checkForEmptyVariables) {
       studentToAdd.setForename("empty");
       return studentModel.toModel(studentToAdd);
     } else {
-      studentTA.addStudent(studentToAdd);
-      List<Subject> subjects = subjectTA.getSubjectByName(studentToAdd.getSubjects());
-      subjects.forEach(sub -> {
-        studentToAdd.getSubject().add(sub);
-      });
-      return studentModel.toModel(studentToAdd);
+      Student dbResponse = studentTA.addStudent(studentToAdd);
+      return studentModel.toModel(dbResponse);
     }
   }
 
 
   @Override
-  public StudentModel deleteStudent(String studentEmail) {
-    Student removedstudent = studentTA.deleteStudent(studentEmail);
-    return studentModel.toModel(removedstudent);
+  public String deleteStudent(String email) {
+    LOGGER.info("SDA: deleteSubject()");
+    if ((email == null) || (email.isBlank())) {
+      return "empty";
+    }
+    return studentTA.deleteStudent(email);
   }
 
+
+//  @Override
+//  public StudentModel updateStudent(String forename, String lastname, String email) {
+//    Student studentToUpdate = new Student(forename, lastname, email);
+//    boolean emptyField = Stream.of(forename, lastname, email)
+//            .anyMatch(String::isBlank);
+//    if (emptyField) {
+//      studentToUpdate.setForename("empty");
+//      return studentModel.toModel(studentToUpdate);
+//    } else {
+//      Student temp = studentTA.updateStudent(forename, lastname, email);
+//      return studentModel.toModel(studentToUpdate);
+//    }
+//  }
+
+
+  //  @Override
+//  public StudentModel updateStudentPartial(String studentBody) {
+//    Student studentToUpdate = student.toEntity(studentBody);
+//    boolean emptyBody =
+//            Stream.of(studentToUpdate.getForename(),
+//                    studentToUpdate.getLastname(),
+//                    studentToUpdate.getEmail())
+//                    .allMatch(String::isBlank);
+//    if (emptyBody) {
+//      studentToUpdate.setForename("empty");
+//      return studentModel.toModel(studentToUpdate);
+//    } else {
+//      studentTA.updateStudentPartial(studentToUpdate);
+//      return studentModel.toModel(studentToUpdate);
+//    }
+//  }
 
   @Override
-  public StudentModel updateStudent(String forename, String lastname, String email) {
-    Student studentToUpdate = new Student(forename, lastname, email);
-    boolean emptyField = Stream.of(forename, lastname, email)
-            .anyMatch(String::isBlank);
-    if (emptyField) {
-      studentToUpdate.setForename("empty");
-      return studentModel.toModel(studentToUpdate);
-    } else {
-      Student temp = studentTA.updateStudent(forename, lastname, email);
-      return studentModel.toModel(studentToUpdate);
-    }
-  }
-
-
-  @Override
-  public StudentModel updateStudentPartial(String studentBody) {
-    Student studentToUpdate = student.toEntity(studentBody);
-    boolean emptyBody =
-            Stream.of(studentToUpdate.getForename(),
-                    studentToUpdate.getLastname(),
-                    studentToUpdate.getEmail())
-                    .allMatch(String::isBlank);
-    if (emptyBody) {
-      studentToUpdate.setForename("empty");
-      return studentModel.toModel(studentToUpdate);
-    } else {
-      studentTA.updateStudentPartial(studentToUpdate);
-      return studentModel.toModel(studentToUpdate);
-    }
-  }
-
-
-  @Override
-  public List<StudentModel> findStudentsByName(String forename) {
-    List<Student> foundedStudents = studentTA.findStudentsByName(forename);
-    List<StudentModel> studentModels = new ArrayList<>();
-    for (Student s : foundedStudents) {
-      studentModels.add(studentModel.toModel(s));
-    }
-    return studentModels;
-  }
-
-
   public StudentModel findStudentByEmail(String email) {
-    Student foundedStudent = studentTA.findStudentByEmail(email);
-    return studentModel.toModel(foundedStudent);
+    Student dbResponse = studentTA.findStudentByEmail(email);
+    return studentModel.toModel(dbResponse);
   }
 
+  @Override
+  public List<StudentModel> findStudentsByForename(String forename) {
+    List<Student> dbResponse = studentTA.findStudentsByName(forename);
+    List<StudentModel> studentModels = new ArrayList<>();
+    if ((dbResponse != null) && (dbResponse.size() > 0)) {
+      for (Student stud : dbResponse) {
+        studentModels.add(studentModel.toModel(stud));
+      }
+      return studentModels;
+    }
+    return null;
+  }
 
   ///////////////////////////////////// Student end ///////////////////////////////////////////
 
+
+
+
+
+  //////////////////////////////////// Teacher start //////////////////////////////////////////
+
+  @Override
+  public List<TeacherModel> getTeachers() {
+    System.out.println("getTeachers() - SDA");
+    List<Teacher> dbResponse = teacherTA.getTeachers();
+    return teacherModel.toModelList(dbResponse);
+  }
+
+
+  @Override
+  public TeacherModel addTeacher(String teacherBody) {
+    LOGGER.info("SDA: addTeacher()");
+    Teacher teacherToAdd = teacher.toEntity(teacherBody);
+    boolean checkForEmptyVariables = Stream.of(teacherToAdd.getForename(), teacherToAdd.getLastname(), teacherToAdd.getEmail())
+            .anyMatch(String::isBlank);
+    if (checkForEmptyVariables) {
+      teacherToAdd.setForename("empty");
+      return teacherModel.toModel(teacherToAdd);
+    } else {
+      Teacher dbResponse = teacherTA.addTeacher(teacherToAdd);
+      return teacherModel.toModel(dbResponse);
+    }
+  }
+
+
+  @Override
+  public String deleteTeacher(String email) {
+    LOGGER.info("SDA: deleteTeacher()");
+    if ((email == null) || (email.isBlank())) {
+      return "empty";
+    }
+    return teacherTA.deleteTeacher(email);
+  }
+
+
+
+//TEACHER UPDATE
+//  @Override
+//  public StudentModel updateStudent(String forename, String lastname, String email) {
+//    Student studentToUpdate = new Student(forename, lastname, email);
+//    boolean emptyField = Stream.of(forename, lastname, email)
+//            .anyMatch(String::isBlank);
+//    if (emptyField) {
+//      studentToUpdate.setForename("empty");
+//      return studentModel.toModel(studentToUpdate);
+//    } else {
+//      Student temp = studentTA.updateStudent(forename, lastname, email);
+//      return studentModel.toModel(studentToUpdate);
+//    }
+//  }
+
+
+//TEACHER UPDATE partial
+  //  @Override
+//  public StudentModel updateStudentPartial(String studentBody) {
+//    Student studentToUpdate = student.toEntity(studentBody);
+//    boolean emptyBody =
+//            Stream.of(studentToUpdate.getForename(),
+//                    studentToUpdate.getLastname(),
+//                    studentToUpdate.getEmail())
+//                    .allMatch(String::isBlank);
+//    if (emptyBody) {
+//      studentToUpdate.setForename("empty");
+//      return studentModel.toModel(studentToUpdate);
+//    } else {
+//      studentTA.updateStudentPartial(studentToUpdate);
+//      return studentModel.toModel(studentToUpdate);
+//    }
+//  }
+
+  @Override
+  public TeacherModel findTeacherByEmail(String email) {
+    Teacher dbResponse = teacherTA.findTeacherByEmail(email);
+    return teacherModel.toModel(dbResponse);
+  }
+
+  @Override
+  public List<TeacherModel> findTeachersByForename(String forename) {
+    List<Teacher> dbResponse = teacherTA.findTeachersByForename(forename);
+    List<TeacherModel> teacherModels = new ArrayList<>();
+    if ((dbResponse != null) && (dbResponse.size() > 0)) {
+      for (Teacher teach : dbResponse) {
+        teacherModels.add(teacherModel.toModel(teach));
+      }
+      return teacherModels;
+    }
+    return null;
+  }
+
+  ///////////////////////////////////// Teacher end ///////////////////////////////////////////
 
 }

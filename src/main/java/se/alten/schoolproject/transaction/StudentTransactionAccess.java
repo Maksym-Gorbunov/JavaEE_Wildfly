@@ -9,13 +9,9 @@ import java.util.List;
 public interface StudentTransactionAccess {
     List getStudents();
     Student addStudent(Student studentToAdd);
-    Student deleteStudent(String student);
+    String deleteStudent(String student);
     Student updateStudent(String forename, String lastname, String email);
     Student updateStudentPartial(Student studentToUpdate);
     List<Student> findStudentsByName(String forename);
     Student findStudentByEmail(String email);
-
-  List<Student> listStudentsBySubject(String subj);
-
-  List<Student> getStudentsByEmail(List<String> emailList);
 }

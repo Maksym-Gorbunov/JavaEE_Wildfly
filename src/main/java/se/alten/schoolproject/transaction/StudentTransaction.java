@@ -4,10 +4,7 @@ import se.alten.schoolproject.entity.Student;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,12 +21,13 @@ public class StudentTransaction implements StudentTransactionAccess {
   @Override
   public List<Student> getStudents() {
     System.out.println("getStudents() - Transaction");
-    Query query = em.createQuery("SELECT s FROM Student s JOIN FETCH s.subject t");
+    Query query = em.createQuery("SELECT s FROM Student s");
     List<Student> temp = query.getResultList();
-    List<Student> result = temp.stream()
-            .distinct()
-            .collect(Collectors.toList());
-    return result;
+//    List<Student> result = temp.stream()
+//            .distinct()
+//            .collect(Collectors.toList());
+//    return result;
+    return temp;
   }
 
 
@@ -42,22 +40,14 @@ public class StudentTransaction implements StudentTransactionAccess {
 
 
   @Override
-  public Student deleteStudent(String email) {
-    Student studentToRemove = new Student();
-    Student removedStudent = new Student();
-
-    studentToRemove = (Student) em.createQuery("SELECT s FROM Student s WHERE s.email = :email")
-            .setParameter("email", email).getSingleResult();
-
-    removedStudent.setId(studentToRemove.getId());
-    removedStudent.setForename(studentToRemove.getForename());
-    removedStudent.setLastname(studentToRemove.getLastname());
-    removedStudent.setEmail(studentToRemove.getEmail());
-
+  public String deleteStudent(String email) {
     Query query = em.createQuery("DELETE FROM Student s WHERE s.email = :email");
-    query.setParameter("email", email)
-            .executeUpdate();
-    return removedStudent;
+    query.setParameter("email", email);
+    int rowsDeleted = query.executeUpdate();
+    if (rowsDeleted < 1) {
+      return "";
+    }
+    return email;
   }
 
 
@@ -102,31 +92,4 @@ public class StudentTransaction implements StudentTransactionAccess {
     return foundedStudent;
   }
 
-
-  @Override
-  public List<Student> listStudentsBySubject(String subj) {
-      Query query = em.createQuery("SELECT s FROM Student s JOIN FETCH s.subject t WHERE t.title=:subj");
-      query.setParameter("subj", subj);
-      List<Student> res = query.getResultList();
-      return res;
-  }
-
-
-  @Override
-  public List<Student> getStudentsByEmail(List<String> emailList) {
-    String queryStr = "SELECT stud FROM Student stud WHERE stud.email IN :emailList";
-    TypedQuery<Student> query = em.createQuery(queryStr, Student.class);
-    query.setParameter("emailList", emailList);
-    return query.getResultList();
-  }
-
-
-
 }
-
-
-
-/* JPQL query
-    Student foundedStudent = (Student) em.createQuery("SELECT s FROM Student s WHERE s.email = :email")
-            .setParameter("email", email).getSingleResult(); */
-//typed query

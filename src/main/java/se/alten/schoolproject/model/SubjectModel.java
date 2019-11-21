@@ -33,7 +33,6 @@ public class SubjectModel {
 
     public List<SubjectModel> toModelList(List<Subject> subjects) {
         List<SubjectModel> subjectModels = new ArrayList<>();
-
         subjects.forEach(subj -> {
             SubjectModel sm = toModel(subj);
             subjectModels.add(sm);

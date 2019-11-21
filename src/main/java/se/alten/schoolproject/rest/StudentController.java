@@ -75,6 +75,9 @@ public class StudentController {
             if (result.equals("empty")) {
                 return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Can't delete student with empty email!\"}").build(); //406
             }
+            if (result.equals("")) {
+                return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Student not found!\"}").build(); //406
+            }
             return Response.ok().entity("{\"Student \"" + result + "\" was deleted from database!\"}").build();
         } catch (NoResultException e) {
             LOGGER.info("deleteStudent: " + e.getClass().getSimpleName());
@@ -93,12 +96,12 @@ public class StudentController {
 
 
     @GET
-    @Path("find/{email}")
+    @Path("find/email/{email}")
     @Produces({"application/JSON"})
-    public Response findStudentByEmail(@PathParam("email") String title) {
+    public Response findStudentByEmail(@PathParam("email") String email) {
         try {
             LOGGER.info("Controller: findStudentByEmail()");
-            SubjectModel result = sal.findSubjectByTitle(title);
+            StudentModel result = sal.findStudentByEmail(email);
             return Response.ok(result).build();
         } catch (EJBTransactionRolledbackException | PersistenceException e) {
             LOGGER.info("findStudentByEmail: " + e.getClass().getSimpleName());
@@ -114,22 +117,21 @@ public class StudentController {
 
 
     @GET
-    @Path("find/")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("find/forename/{forename}")
     @Produces({"application/JSON"})
-    public Response findAllStudentsByForename(String forename) {
+    public Response findAllStudentsByForename(@PathParam("forename") String forename) {
         try {
-            LOGGER.info("Controller: findAllStudentsByForename");
-            List<StudentModel> result = sal.findAllStudentsByForename(forename);
+            LOGGER.info("Controller: findStudentsByForename");
+            List<StudentModel> result = sal.findStudentsByForename(forename);
             return Response.ok(result).build();
         } catch (EJBTransactionRolledbackException | PersistenceException e) {
-            LOGGER.info("findAllStudentsByForename: " + e.getClass().getSimpleName());
+            LOGGER.info("findStudentsByForename: " + e.getClass().getSimpleName());
             return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Student with current email not found!\"}").build(); //417
         } catch (RuntimeException e) {
-            LOGGER.info("findAllStudentsByForename: " + e.getClass().getSimpleName());
+            LOGGER.info("findStudentsByForename: " + e.getClass().getSimpleName());
             return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build(); //404
         } catch (Exception e) {
-            LOGGER.info("findAllStudentsByForename: " + e.getClass().getSimpleName());
+            LOGGER.info("findStudentsByForename: " + e.getClass().getSimpleName());
             return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build(); //400
         }
     }

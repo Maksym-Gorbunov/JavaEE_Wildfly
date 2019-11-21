@@ -2,6 +2,7 @@ package se.alten.schoolproject.dao;
 
 import se.alten.schoolproject.model.StudentModel;
 import se.alten.schoolproject.model.SubjectModel;
+import se.alten.schoolproject.model.TeacherModel;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -11,13 +12,13 @@ public interface SchoolAccessLocal {
 
   /*-------------------- Subject start ------------------------*/
 
-  List<SubjectModel> findAllSubjectsByTitleList(String titleList);
-
   List getSubjects();
 
   SubjectModel addSubject(String subjectModel);
 
   String deleteSubject(String title);
+
+  List<SubjectModel> findAllSubjectsByTitleList(String titleList);
 
   SubjectModel findSubjectByTitle(String title);
 
@@ -25,23 +26,36 @@ public interface SchoolAccessLocal {
 
 
 
+
   /*-------------------- Student start ------------------------*/
 
-  List listAllStudents() throws Exception;
+  List<StudentModel> getStudents();
 
-  StudentModel addStudent(String studentModel);
+  List<TeacherModel> getTeachers();
 
-  StudentModel deleteStudent(String student);
+  StudentModel addStudent(String newStudent);
 
-  StudentModel updateStudent(String forename, String lastname, String email);
+  TeacherModel addTeacher(String teacherBody);
 
-  StudentModel updateStudentPartial(String studentModel);
+  String deleteStudent(String studentEmail);
 
-  List<StudentModel> findStudentsByName(String forename);
+  String deleteTeacher(String email);
 
   StudentModel findStudentByEmail(String email);
 
+  TeacherModel findTeacherByEmail(String email);
+
+  List<StudentModel> findStudentsByForename(String forename);
+
+  List<TeacherModel> findTeachersByForename(String forename);
+
   /*--------------------- Student end -------------------------*/
+
+
+
+
+
+
 
 
 

@@ -40,7 +40,7 @@ public class SubjectTransaction implements SubjectTransactionAccess {
     query.setParameter("title", title);
     int rowsDeleted = query.executeUpdate();
     if (rowsDeleted < 1) {
-      throw new NoResultException();
+      return "";
     }
     return title;
   }
