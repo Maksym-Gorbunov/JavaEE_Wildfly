@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.io.StringReader;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 @Entity
 @Getter
@@ -29,12 +30,9 @@ public class Subject implements Serializable {
     @Column(unique = true)
     private String title;
 
-    @ManyToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private Set<Student> students = new HashSet<>();
 
-    //@ManyToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    //private Set<Teacher> teachers = new HashSet<>();
-    /////
+    private static final Logger LOGGER = (Logger) Logger.getLogger(Subject.class.getName());
+
 
     public Subject toEntity(String subjectModel) {
         JsonReader reader = Json.createReader(new StringReader(subjectModel));

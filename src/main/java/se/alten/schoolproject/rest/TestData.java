@@ -31,68 +31,68 @@ public class TestData {
   public Response fill() {
     System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<< fill() >>>>>>>>>>>>>>>>>>>>>>>>>>");
     populateSubjects();
-    populateStudents();
+//    populateStudents();
     return Response.ok().entity("{\"Test data was added to database!\"}").build();
   }
 
-  private void populateStudents(){
-    List<String> students = new ArrayList<>();
-    students.add("{\n" +
-            "    \"forename\": \"Max\",\n" +
-            "    \"lastname\": \"Fry\",\n" +
-            "    \"email\": \"max.fry@com\",\n" +
-            "    \"subjects\": [\n" +
-            "        \"AI\",\n" +
-            "        \"ML\"\n" +
-            "    ]\n" +
-            "}");
-    students.add("{\n" +
-            "    \"forename\": \"Tom\",\n" +
-            "    \"lastname\": \"Hanks\",\n" +
-            "    \"email\": \"tom.hanks@com\",\n" +
-            "    \"subjects\": [\n" +
-            "        \"Javascript\",\n" +
-            "        \"ML\"\n" +
-            "    ]\n" +
-            "}");
-    students.add("{\n" +
-            "    \"forename\": \"Andy\",\n" +
-            "    \"lastname\": \"Flatcher\",\n" +
-            "    \"email\": \"andy.flatcher@com\",\n" +
-            "    \"subjects\": [\n" +
-            "        \"Python\",\n" +
-            "        \"AI\"\n" +
-            "    ]\n" +
-            "}");
-    students.add("{\n" +
-            "    \"forename\": \"Anna\",\n" +
-            "    \"lastname\": \"Lee\",\n" +
-            "    \"email\": \"anna.lee@com\",\n" +
-            "    \"subjects\": [\n" +
-            "        \"Java\",\n" +
-            "        \"Javascript\"\n" +
-            "    ]\n" +
-            "}");
-    students.add("{\n" +
-            "    \"forename\": \"Nils\",\n" +
-            "    \"lastname\": \"Karlsson\",\n" +
-            "    \"email\": \"nils.karlsson@com\",\n" +
-            "    \"subjects\": [\n" +
-            "        \"OOP\",\n" +
-            "        \"Programming\"\n" +
-            "    ]\n" +
-            "}");
-    students.add("{\n" +
-            "    \"forename\": \"Robert\",\n" +
-            "    \"lastname\": \"Larssson\",\n" +
-            "    \"email\": \"robert.larsson@com\",\n" +
-            "    \"subjects\": [\n" +
-            "        \"Ruby\",\n" +
-            "        \"Java\"\n" +
-            "    ]\n" +
-            "}");
-    students.stream().forEach(s -> sal.addStudent(s));
-  }
+//  private void populateStudents(){
+//    List<String> students = new ArrayList<>();
+//    students.add("{\n" +
+//            "    \"forename\": \"Max\",\n" +
+//            "    \"lastname\": \"Fry\",\n" +
+//            "    \"email\": \"max.fry@com\",\n" +
+//            "    \"subjects\": [\n" +
+//            "        \"AI\",\n" +
+//            "        \"ML\"\n" +
+//            "    ]\n" +
+//            "}");
+//    students.add("{\n" +
+//            "    \"forename\": \"Tom\",\n" +
+//            "    \"lastname\": \"Hanks\",\n" +
+//            "    \"email\": \"tom.hanks@com\",\n" +
+//            "    \"subjects\": [\n" +
+//            "        \"Javascript\",\n" +
+//            "        \"ML\"\n" +
+//            "    ]\n" +
+//            "}");
+//    students.add("{\n" +
+//            "    \"forename\": \"Andy\",\n" +
+//            "    \"lastname\": \"Flatcher\",\n" +
+//            "    \"email\": \"andy.flatcher@com\",\n" +
+//            "    \"subjects\": [\n" +
+//            "        \"Python\",\n" +
+//            "        \"AI\"\n" +
+//            "    ]\n" +
+//            "}");
+//    students.add("{\n" +
+//            "    \"forename\": \"Anna\",\n" +
+//            "    \"lastname\": \"Lee\",\n" +
+//            "    \"email\": \"anna.lee@com\",\n" +
+//            "    \"subjects\": [\n" +
+//            "        \"Java\",\n" +
+//            "        \"Javascript\"\n" +
+//            "    ]\n" +
+//            "}");
+//    students.add("{\n" +
+//            "    \"forename\": \"Nils\",\n" +
+//            "    \"lastname\": \"Karlsson\",\n" +
+//            "    \"email\": \"nils.karlsson@com\",\n" +
+//            "    \"subjects\": [\n" +
+//            "        \"OOP\",\n" +
+//            "        \"Programming\"\n" +
+//            "    ]\n" +
+//            "}");
+//    students.add("{\n" +
+//            "    \"forename\": \"Robert\",\n" +
+//            "    \"lastname\": \"Larssson\",\n" +
+//            "    \"email\": \"robert.larsson@com\",\n" +
+//            "    \"subjects\": [\n" +
+//            "        \"Ruby\",\n" +
+//            "        \"Java\"\n" +
+//            "    ]\n" +
+//            "}");
+//    students.stream().forEach(s -> sal.addStudent(s));
+//  }
 
   private void populateSubjects(){
     List<String> subjects = new ArrayList<>();

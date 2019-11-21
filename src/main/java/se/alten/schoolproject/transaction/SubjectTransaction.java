@@ -1,8 +1,6 @@
 package se.alten.schoolproject.transaction;
 
-import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
-import se.alten.schoolproject.rest.StudentController;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
@@ -14,10 +12,11 @@ import java.util.logging.Logger;
 @Default
 public class SubjectTransaction implements SubjectTransactionAccess {
 
-  private static final Logger LOGGER = (Logger) Logger.getLogger(StudentController.class.getName());
+  private static final Logger LOGGER = (Logger) Logger.getLogger(SubjectTransaction.class.getName());
 
   @PersistenceContext(unitName = "school")
   private EntityManager em;
+
 
   @Override
   public List listAllSubjects() {
@@ -25,6 +24,7 @@ public class SubjectTransaction implements SubjectTransactionAccess {
     Query query = em.createQuery("SELECT s FROM Subject s");
     return query.getResultList();
   }
+
 
   @Override
   public Subject addSubject(Subject subject) {
@@ -34,7 +34,6 @@ public class SubjectTransaction implements SubjectTransactionAccess {
   }
 
 
-  //change subject to tiltle
   @Override
   public List<Subject> getSubjectByName(List<String> titleList) {
     String queryStr = "SELECT sub FROM Subject sub WHERE sub.title IN :titleList";
