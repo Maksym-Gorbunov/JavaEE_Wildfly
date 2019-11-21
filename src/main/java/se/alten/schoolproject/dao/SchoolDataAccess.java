@@ -6,10 +6,11 @@ import se.alten.schoolproject.transaction.SubjectTransactionAccess;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.json.*;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 @Stateless
 public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
@@ -22,12 +23,12 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   SubjectTransactionAccess subjectTA;
 
 
-  //////////////////////////////////// Subject //////////////////////////////////////////
+  //////////////////////////////////// Subject start //////////////////////////////////////////
 
   @Override
-  public List<SubjectModel> listAllSubjects() {
-    LOGGER.info("SDA: listAllSubjects()");
-    List<Subject> dbResponse = subjectTA.listAllSubjects();
+  public List<SubjectModel> getSubjects() {
+    LOGGER.info("SDA: getSubjects()");
+    List<Subject> dbResponse = subjectTA.getSubjects();
     return subjectModel.toModelList(dbResponse);
   }
 
@@ -54,6 +55,46 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   }
 
 
+  @Override
+  public SubjectModel findSubjectByTitle(String title) {
+    if ((title == null) || (title.isEmpty())) {
+      return null;
+    }
+    Subject dbResponse = subjectTA.findSubjectByTitle(title);
+    return subjectModel.toModel(dbResponse);
+  }
+
+
+  @Override
+  public List<SubjectModel> findAllSubjectsByTitleList(String titleListBody) {
+    if ((titleListBody == null) || (titleListBody.isEmpty())) {
+      return null;
+    }
+
+    List<String> titleList = new ArrayList<>();
+
+    JsonReader reader = Json.createReader(new StringReader(titleListBody));
+    JsonObject jsonObject = reader.readObject();
+
+    if (jsonObject.containsKey("subjects")) {
+      JsonArray jsonArray = jsonObject.getJsonArray("subjects");
+      for(JsonValue title : jsonArray){
+        titleList.add(title.toString().replace("\"", ""));
+      }
+    }
+
+    if (titleList.size() > 0) {
+      List<SubjectModel> models = new ArrayList<>();
+      List<Subject> dbResponse = subjectTA.findAllSubjectsByTitleList(titleList);
+      for (Subject subj : dbResponse) {
+        models.add(subjectModel.toModel(subj));
+      }
+      return models;
+    }
+    return null;
+  }
+
+  //////////////////////////////////// Subject end //////////////////////////////////////////
 
 
 }

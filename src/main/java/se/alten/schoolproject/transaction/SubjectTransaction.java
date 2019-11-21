@@ -19,8 +19,8 @@ public class SubjectTransaction implements SubjectTransactionAccess {
 
 
   @Override
-  public List listAllSubjects() {
-    System.out.println("listAllSubjects() - Transaction");
+  public List getSubjects() {
+    System.out.println("getSubjects() - Transaction");
     Query query = em.createQuery("SELECT s FROM Subject s");
     return query.getResultList();
   }
@@ -35,14 +35,6 @@ public class SubjectTransaction implements SubjectTransactionAccess {
 
 
   @Override
-  public List<Subject> getSubjectByName(List<String> titleList) {
-    String queryStr = "SELECT sub FROM Subject sub WHERE sub.title IN :titleList";
-    TypedQuery<Subject> query = em.createQuery(queryStr, Subject.class);
-    query.setParameter("titleList", titleList);
-    return query.getResultList();
-  }
-
-  @Override
   public String deleteSubject(String title) {
     Query query = em.createQuery("DELETE FROM Subject s WHERE s.title = :title");
     query.setParameter("title", title);
@@ -53,5 +45,22 @@ public class SubjectTransaction implements SubjectTransactionAccess {
     return title;
   }
 
+
+  @Override
+  public Subject findSubjectByTitle(String title) {
+    String queryStr = "SELECT s FROM Subject s WHERE s.title = :title";
+    TypedQuery<Subject> query = em.createQuery(queryStr, Subject.class);
+    query.setParameter("title", title);
+    return query.getSingleResult();
+  }
+
+
+  @Override
+  public List<Subject> findAllSubjectsByTitleList(List<String> titleList) {
+    String queryStr = "SELECT sub FROM Subject sub WHERE sub.title IN :titleList";
+    TypedQuery<Subject> query = em.createQuery(queryStr, Subject.class);
+    query.setParameter("titleList", titleList);
+    return query.getResultList();
+  }
 
 }

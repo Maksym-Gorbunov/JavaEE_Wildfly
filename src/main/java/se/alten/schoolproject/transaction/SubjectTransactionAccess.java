@@ -7,11 +7,13 @@ import java.util.List;
 
 @Local
 public interface SubjectTransactionAccess {
-  List listAllSubjects();
+  List getSubjects();
 
   Subject addSubject(Subject subject);
 
-  List<Subject> getSubjectByName(List<String> subject);
+  Subject findSubjectByTitle(String title);
+
+  List<Subject> findAllSubjectsByTitleList(List<String> subject);
 
   String deleteSubject(String title);
 

@@ -28,10 +28,10 @@ public class SubjectController {
 
   @GET
   @Produces({"application/JSON"})
-  public Response listSubjects() {
-    LOGGER.info("Controller: listAllSubjects()");
+  public Response getSubjects() {
+    LOGGER.info("Controller: getSubjects()");
     try {
-      List<SubjectModel> result = sal.listAllSubjects();
+      List<SubjectModel> result = sal.getSubjects();
       return Response.ok(result).build();
     } catch (Exception e) {
       return Response.status(Response.Status.CONFLICT).build();
@@ -93,5 +93,49 @@ public class SubjectController {
 
 
 
+
+
+
+
+
+  @GET
+  @Path("find/{title}")
+  @Produces({"application/JSON"})
+  public Response findSubjectByTitle(@PathParam("title") String title) {
+    try {
+      LOGGER.info("Controller: findSubjectByTitle()");
+      SubjectModel result = sal.findSubjectByTitle(title);
+      return Response.ok(result).build();
+    } catch (EJBTransactionRolledbackException | PersistenceException e) {
+      LOGGER.info("findSubjectByTitle: " + e.getClass().getSimpleName());
+      return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Student with current email not found!\"}").build(); //417
+    } catch (RuntimeException e) {
+      LOGGER.info("findSubjectByTitle: " + e.getClass().getSimpleName());
+      return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build(); //404
+    } catch (Exception e) {
+      LOGGER.info("findSubjectByTitle: " + e.getClass().getSimpleName());
+      return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build(); //400
+    }
+  }
+
+
+  @GET
+  @Path("find/all")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces({"application/JSON"})
+  public Response findAllSubjectsByTitleList(String titleListBody) {
+    try {
+      LOGGER.info("Controller: findAllSubjectsByTitleList");
+      List<SubjectModel> result = sal.findAllSubjectsByTitleList(titleListBody);
+      return Response.ok(result).build();
+    } catch (EJBTransactionRolledbackException | PersistenceException e) {
+      LOGGER.info("findAllSubjectsByTitle: " + e.getClass().getSimpleName());      return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Student with current email not found!\"}").build(); //417
+    } catch (RuntimeException e) {
+      LOGGER.info("findAllSubjectsByTitle: " + e.getClass().getSimpleName());      return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build(); //404
+    } catch (Exception e) {
+      LOGGER.info("findAllSubjectsByTitle: " + e.getClass().getSimpleName());
+      return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build(); //400
+    }
+  }
 
 }

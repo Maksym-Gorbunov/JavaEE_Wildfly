@@ -10,11 +10,14 @@ public interface SchoolAccessLocal {
 
 
 
-  List listAllSubjects();
+  List getSubjects();
 
   SubjectModel addSubject(String subjectModel);
 
   String deleteSubject(String title);
 
 
+  SubjectModel findSubjectByTitle(String title);
+
+  List<SubjectModel> findAllSubjectsByTitleList(String titleList);
 }
