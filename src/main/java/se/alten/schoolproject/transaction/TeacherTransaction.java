@@ -90,7 +90,7 @@ public class TeacherTransaction implements TeacherTransactionAccess {
 
 
   @Override
-  public Teacher findTeacherByEmail(String email) {
+  public Teacher getTeacherByEmail(String email) {
     Teacher foundedTeacher = em.createQuery("SELECT t FROM Teacher t WHERE t.email = :email", Teacher.class)
             .setParameter("email", email).getSingleResult();
     return foundedTeacher;

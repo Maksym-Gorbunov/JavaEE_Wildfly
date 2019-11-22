@@ -14,5 +14,5 @@ public interface TeacherTransactionAccess {
   Teacher updateTeacher(String forename, String lastname, String email);
   Teacher updateTeacherPartial(Teacher teacher);
   List<Teacher> findTeachersByForename(String forename);
-  Teacher findTeacherByEmail(String email);
+  Teacher getTeacherByEmail(String email);
 }

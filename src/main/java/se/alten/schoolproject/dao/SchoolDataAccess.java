@@ -308,7 +308,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
   @Override
   public TeacherModel findTeacherByEmail(String email) {
-    Teacher dbResponse = teacherTA.findTeacherByEmail(email);
+    Teacher dbResponse = teacherTA.getTeacherByEmail(email);
     return teacherModel.toModel(dbResponse);
   }
 
@@ -322,6 +322,30 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
       }
       return teacherModels;
     }
+    return null;
+  }
+
+
+
+  @Override
+  public String addTeacherToSubject(String subjectTitle, String teacherBody) {
+
+    JsonReader reader = Json.createReader(new StringReader(teacherBody));
+    JsonObject jsonObject = reader.readObject();
+    Subject subjectForUpdate = subjectTA.getSubjectByTitle(subjectTitle);
+
+    if ((subjectForUpdate != null) && (subjectForUpdate.getTitle().equals(subjectTitle))) {
+      if (jsonObject.containsKey("teacher")) {
+        JsonValue jsonValue = jsonObject.getValue("/teacher");
+        String email = jsonValue.toString().replace("\"", "");
+
+        //bind
+        Teacher teacherToJoin = teacherTA.getTeacherByEmail(email);
+        subjectForUpdate.setJoinedTeacher(teacherToJoin);
+
+      }
+    }
+
     return null;
   }
 

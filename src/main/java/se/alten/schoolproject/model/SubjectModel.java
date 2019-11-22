@@ -2,6 +2,7 @@ package se.alten.schoolproject.model;
 
 import lombok.*;
 import se.alten.schoolproject.entity.Subject;
+import se.alten.schoolproject.entity.Teacher;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,6 +20,7 @@ public class SubjectModel {
     private String title;
 
     private Set<String> students = new HashSet<>();
+    private Teacher teacher;
 
     private static final Logger LOGGER = (Logger) Logger.getLogger(SubjectModel.class.getName());
 
@@ -35,6 +37,8 @@ public class SubjectModel {
         subjectToAdd.getJoinedStudents().forEach(stud -> {
             subjectModel.students.add(stud.getEmail());
         });
+
+        subjectToAdd.setJoinedTeacher(subjectModel.teacher);
 
         return subjectModel;
     }

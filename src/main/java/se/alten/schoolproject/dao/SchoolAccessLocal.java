@@ -51,6 +51,8 @@ public interface SchoolAccessLocal {
 
   List<TeacherModel> findTeachersByForename(String forename);
 
+  String addTeacherToSubject(String subjectTitle, String teacherBody);
+
 
 
   /*--------------------- Student end -------------------------*/

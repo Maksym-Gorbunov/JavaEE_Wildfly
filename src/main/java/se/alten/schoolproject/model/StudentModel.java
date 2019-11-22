@@ -24,10 +24,12 @@ public class StudentModel {
   private String lastname;
   private String email;
 
-  public StudentModel toModel(Student student) {
+  private Set<String> subjects = new HashSet<>();
+
+  public StudentModel toModel(Student studentToAdd) {
     StudentModel studentModel = new StudentModel();
 
-    switch (student.getForename()) {
+    switch (studentToAdd.getForename()) {
       case "empty":
         studentModel.setForename("empty");
         return studentModel;
@@ -35,9 +37,15 @@ public class StudentModel {
         studentModel.setForename("duplicate");
         return studentModel;
       default:
-        studentModel.setForename(student.getForename());
-        studentModel.setLastname(student.getLastname());
-        studentModel.setEmail(student.getEmail());
+        studentModel.setForename(studentToAdd.getForename());
+        studentModel.setLastname(studentToAdd.getLastname());
+        studentModel.setEmail(studentToAdd.getEmail());
+
+
+        studentToAdd.getJoinedSubjects().forEach(subj -> {
+          studentModel.subjects.add(subj.getTitle());
+        });
+
 
         return studentModel;
     }

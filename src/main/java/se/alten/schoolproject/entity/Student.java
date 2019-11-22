@@ -36,7 +36,7 @@ public class Student implements Serializable {
     private String email;
 
 
-
+    /*------------------------- Join Student with Subject -----------------------------*/
     @ManyToMany(mappedBy = "joinedStudents", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Subject> joinedSubjects = new HashSet<>();
 

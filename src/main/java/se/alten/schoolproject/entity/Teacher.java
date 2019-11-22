@@ -39,6 +39,10 @@ public class Teacher implements Serializable {
   private String email;
 
 
+  /*------------------------- Join Teacher with Subject -----------------------------*/
+  @OneToMany(mappedBy = "joinedTeacher", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+  private Set<Subject> joinedSubjects = new HashSet<>();
+
 
 
   public Teacher(String forename, String lastname, String email) {
