@@ -1,5 +1,6 @@
 package se.alten.schoolproject.dao;
 
+import org.apache.log4j.Logger;
 import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.entity.Subject;
 import se.alten.schoolproject.entity.Teacher;
@@ -16,13 +17,12 @@ import javax.json.*;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 @Stateless
 public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
-  private static final Logger LOGGER = (Logger) Logger.getLogger(SchoolDataAccess.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(SchoolDataAccess.class);
 
   private Subject subject = new Subject();
   private SubjectModel subjectModel = new SubjectModel();
@@ -44,7 +44,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
   @Override
   public List<SubjectModel> getSubjects() {
-    LOGGER.info("SDA: getSubjects()");
+    LOGGER.error("SDA: getSubjects()");
     List<Subject> dbResponse = subjectTA.getSubjects();
     return subjectModel.toModelList(dbResponse);
   }

@@ -32,67 +32,92 @@ public class TestData {
     System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<< fill() >>>>>>>>>>>>>>>>>>>>>>>>>>");
     populateSubjects();
     populateStudents();
+    populateTeachers();
     return Response.ok().entity("{\"Test data was added to database!\"}").build();
   }
+
+
+  private void populateTeachers(){
+    List<String> teachers = new ArrayList<>();
+    teachers.add("{\n" +
+            "        \"forename\": \"Philip\",\n" +
+            "        \"lastname\": \"Axelsson\",\n" +
+            "        \"email\": \"philip.axelsson@iths.se\"\n" +
+            "    }");
+    teachers.add("{\n" +
+            "        \"forename\": \"Anton\",\n" +
+            "        \"lastname\": \"Fry\",\n" +
+            "        \"email\": \"anton.fry@iths.se\"\n" +
+            "    }");
+    teachers.add("{\n" +
+            "        \"forename\": \"Niklas\",\n" +
+            "        \"lastname\": \"Storm\",\n" +
+            "        \"email\": \"niklas.storm@iths.se\"\n" +
+            "    }");
+    teachers.add("{\n" +
+            "        \"forename\": \"Erik\",\n" +
+            "        \"lastname\": \"Karsson\",\n" +
+            "        \"email\": \"erik.karlsson@iths.se\"\n" +
+            "    }");
+    teachers.add("{\n" +
+            "        \"forename\": \"Patrik\",\n" +
+            "        \"lastname\": \"Norman\",\n" +
+            "        \"email\": \"patrik.norman@iths.se\"\n" +
+            "    }");
+    teachers.add("{\n" +
+            "        \"forename\": \"Kalle\",\n" +
+            "        \"lastname\": \"Larsson\",\n" +
+            "        \"email\": \"kalle.larsson@iths.se\"\n" +
+            "    }");
+    teachers.add("{\n" +
+            "        \"forename\": \"Pontus\",\n" +
+            "        \"lastname\": \"Sandqvist\",\n" +
+            "        \"email\": \"pontus.sandqvist@iths.se\"\n" +
+            "    }");
+    teachers.stream().forEach(t -> sal.addTeacher(t));
+  }
+
 
   private void populateStudents(){
     List<String> students = new ArrayList<>();
     students.add("{\n" +
-            "    \"forename\": \"Max\",\n" +
-            "    \"lastname\": \"Fry\",\n" +
-            "    \"email\": \"max.fry@com\",\n" +
-            "    \"subjects\": [\n" +
-            "        \"AI\",\n" +
-            "        \"ML\"\n" +
-            "    ]\n" +
-            "}");
+            "        \"forename\": \"Kim\",\n" +
+            "        \"lastname\": \"Axelsson\",\n" +
+            "        \"email\": \"kim.axelsson@mail.com\"\n" +
+            "    }");
     students.add("{\n" +
-            "    \"forename\": \"Tom\",\n" +
-            "    \"lastname\": \"Hanks\",\n" +
-            "    \"email\": \"tom.hanks@com\",\n" +
-            "    \"subjects\": [\n" +
-            "        \"Javascript\",\n" +
-            "        \"ML\"\n" +
-            "    ]\n" +
-            "}");
+            "        \"forename\": \"Max\",\n" +
+            "        \"lastname\": \"Fry\",\n" +
+            "        \"email\": \"max.fry@mail.com\"\n" +
+            "    }");
     students.add("{\n" +
-            "    \"forename\": \"Andy\",\n" +
-            "    \"lastname\": \"Flatcher\",\n" +
-            "    \"email\": \"andy.flatcher@com\",\n" +
-            "    \"subjects\": [\n" +
-            "        \"Python\",\n" +
-            "        \"AI\"\n" +
-            "    ]\n" +
-            "}");
+            "        \"forename\": \"Bob\",\n" +
+            "        \"lastname\": \"Storm\",\n" +
+            "        \"email\": \"bob.storm@mail.com\"\n" +
+            "    }");
     students.add("{\n" +
-            "    \"forename\": \"Anna\",\n" +
-            "    \"lastname\": \"Lee\",\n" +
-            "    \"email\": \"anna.lee@com\",\n" +
-            "    \"subjects\": [\n" +
-            "        \"Java\",\n" +
-            "        \"Javascript\"\n" +
-            "    ]\n" +
-            "}");
+            "        \"forename\": \"Nils\",\n" +
+            "        \"lastname\": \"Karsson\",\n" +
+            "        \"email\": \"nils.karlsson@mail.com\"\n" +
+            "    }");
     students.add("{\n" +
-            "    \"forename\": \"Nils\",\n" +
-            "    \"lastname\": \"Karlsson\",\n" +
-            "    \"email\": \"nils.karlsson@com\",\n" +
-            "    \"subjects\": [\n" +
-            "        \"OOP\",\n" +
-            "        \"Programming\"\n" +
-            "    ]\n" +
-            "}");
+            "        \"forename\": \"Alex\",\n" +
+            "        \"lastname\": \"Norman\",\n" +
+            "        \"email\": \"alex.norman@mail.com\"\n" +
+            "    }");
     students.add("{\n" +
-            "    \"forename\": \"Robert\",\n" +
-            "    \"lastname\": \"Larssson\",\n" +
-            "    \"email\": \"robert.larsson@com\",\n" +
-            "    \"subjects\": [\n" +
-            "        \"Ruby\",\n" +
-            "        \"Java\"\n" +
-            "    ]\n" +
-            "}");
+            "        \"forename\": \"Robert\",\n" +
+            "        \"lastname\": \"Larsson\",\n" +
+            "        \"email\": \"robert.larsson@mail.com\"\n" +
+            "    }");
+    students.add("{\n" +
+            "        \"forename\": \"Lena\",\n" +
+            "        \"lastname\": \"Sandqvist\",\n" +
+            "        \"email\": \"lena.sandqvist@mail.com\"\n" +
+            "    }");
     students.stream().forEach(s -> sal.addStudent(s));
   }
+
 
   private void populateSubjects(){
     List<String> subjects = new ArrayList<>();
