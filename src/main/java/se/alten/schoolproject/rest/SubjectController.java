@@ -115,9 +115,29 @@ public class SubjectController {
   }
 
 
-
-
-
+  @POST
+  @Path("/add/student/{subjectTitle}")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces({"application/JSON"})
+  public Response addStudentToSubject(@PathParam("subjectTitle") String subjectTitle, String studentsBody) {
+    LOGGER.info("Controller: addStudentToSubject()");
+    try {
+      String result = sal.addStudentToSubject(subjectTitle, studentsBody);
+      if (result == null) {
+        return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Fill in all details please\"}").build(); //406
+      }
+      return Response.ok(result).build();
+    } catch (EJBTransactionRolledbackException | PersistenceException e) {
+      LOGGER.info("addStudentToSubject: " + e.getClass().getSimpleName());
+      return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Subject already exist!\"}").build(); //417
+    } catch (RuntimeException e) {
+      LOGGER.info("addStudentToSubject: " + e.getClass().getSimpleName());
+      return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build(); //404
+    } catch (Exception e) {
+      LOGGER.info("addStudentToSubject: " + e.getClass().getSimpleName());
+      return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build(); //400
+    }
+  }
 
 
   // ERROR

@@ -17,5 +17,7 @@ public interface SubjectTransactionAccess {
 
   String deleteSubject(String title);
 
+  Subject getSubjectByTitle(String subjectTitle);
+
 //  List<Student> listStudentsBySubject(String subject);
 }

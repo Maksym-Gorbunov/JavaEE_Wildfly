@@ -22,6 +22,8 @@ public interface SchoolAccessLocal {
 
   SubjectModel findSubjectByTitle(String title);
 
+  String addStudentToSubject(String subjectTitle, String studentsBody);
+
   /*--------------------- Subject end -------------------------*/
 
 
@@ -48,6 +50,8 @@ public interface SchoolAccessLocal {
   List<StudentModel> findStudentsByForename(String forename);
 
   List<TeacherModel> findTeachersByForename(String forename);
+
+
 
   /*--------------------- Student end -------------------------*/
 

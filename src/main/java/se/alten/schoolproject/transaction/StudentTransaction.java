@@ -102,4 +102,13 @@ public class StudentTransaction implements StudentTransactionAccess {
     query.setParameter("emails", emails);
     return query.getResultList();
   }
+
+
+  @Override
+  public Student getStudentByEmail(String email) {
+    String queryStr = "SELECT s FROM Student s WHERE s.email = :email";
+    TypedQuery<Student> query = em.createQuery(queryStr, Student.class);
+    query.setParameter("email", email);
+    return query.getSingleResult();
+  }
 }

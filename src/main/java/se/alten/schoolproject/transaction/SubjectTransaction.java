@@ -45,6 +45,13 @@ public class SubjectTransaction implements SubjectTransactionAccess {
     return title;
   }
 
+  @Override
+  public Subject getSubjectByTitle(String subjectTitle) {
+    Subject foundedSubject = em.createQuery("SELECT s FROM Subject s WHERE s.title = :title", Subject.class)
+            .setParameter("title", subjectTitle).getSingleResult();
+    return foundedSubject;
+  }
+
 
   @Override
   public Subject findSubjectByTitle(String title) {

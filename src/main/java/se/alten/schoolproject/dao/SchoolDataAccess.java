@@ -60,13 +60,13 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     Subject dbResponse = subjectTA.addSubject(subjectToAdd);
 
 
-    // bind subject with transientStudents, ?? not need in add method
-    if (subjectToAdd.getTransientStudents() != null) {
-      List<Student> students = studentTA.getStudentsByEmail(subjectToAdd.getTransientStudents());
-      students.forEach(stud -> {
-        subjectToAdd.getJoinedStudents().add(stud);
-      });
-    }
+//    // bind subject with transientStudents, ?? not need in add method
+//    if (subjectToAdd.getTransientStudents() != null) {
+//      List<Student> students = studentTA.getStudentsByEmail(subjectToAdd.getTransientStudents());
+//      students.forEach(stud -> {
+//        subjectToAdd.getJoinedStudents().add(stud);
+//      });
+//    }
 
     return this.subjectModel.toModel(dbResponse);
   }
@@ -120,6 +120,30 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
     return null;
   }
+
+
+  @Override
+  public String addStudentToSubject(String subjectTitle, String studentBody) {
+
+    JsonReader reader = Json.createReader(new StringReader(studentBody));
+    JsonObject jsonObject = reader.readObject();
+    Subject subjectForUpdate = subjectTA.getSubjectByTitle(subjectTitle);
+
+    if ((subjectForUpdate != null) && (subjectForUpdate.getTitle().equals(subjectTitle))) {
+      if (jsonObject.containsKey("student")) {
+        JsonValue jsonValue = jsonObject.getValue("/student");
+        String email = jsonValue.toString().replace("\"", "");
+
+        //bind
+        Student studentToJoin = studentTA.getStudentByEmail(email);
+        subjectForUpdate.getJoinedStudents().add(studentToJoin);
+
+      }
+    }
+
+    return null;
+  }
+
 
   //////////////////////////////////// Subject end //////////////////////////////////////////
 
