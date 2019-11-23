@@ -30,6 +30,12 @@ It should say outcome success. Write `jboss-cli -c --command=:reload` to restart
 
 
 # API Documentation
+<------------------------------- populate db with fake data --------------------------------------------->
+Url: http://localhost:8080/javaEnterprise/fill
+add: fake subjects, students and teachers without joins, pure entity only
+
+
+
                                                             
 <------------------------------- get all subjects --------------------------------------------->
 Method: GET
@@ -96,18 +102,120 @@ Status: 200
 }
 
 
-<------------------------------- find subject --------------------------------------------->
-Method: DELETE
-Url: http://localhost:8080/javaEnterprise/subject/find/AI
+<------------------------------- add student to subject --------------------------------------------->
+Method: POST
+Url: http://localhost:8080/javaEnterprise/subject/add/student/Javascript
+Body:
+{
+	"student": "kim.axelsson@mail.com"
+}
+
+Result:
+Status: 200
+[
+    {
+        "id": null,
+        "title": "Javascript",
+        "students": [
+            "kim.axelsson@mail.com"
+        ],
+        "teacher": null
+    }
+]
+
+
+<------------------------------- get all students --------------------------------------------->
+Method: GET
+Url: http://localhost:8080/javaEnterprise/student
+
+Result:
+Status: 200
+[
+    {
+        "forename": "Kim",
+        "lastname": "Axelsson",
+        "email": "kim.axelsson@mail.com",
+        "subjects": []
+    },
+    {
+        "forename": "Max",
+        "lastname": "Fry",
+        "email": "max.fry@mail.com",
+        "subjects": []
+    }
+]
+
+
+<------------------------------- add student --------------------------------------------->
+Method: POST
+Url: http://localhost:8080/javaEnterprise/student/add
+Body:
+{
+    "forename": "anna",
+    "lastname": "lee",
+    "email": "anna.lee.student@com"
+}
+
 
 Result:
 Status: 200
 {
-    "id": null,
-    "title": "AI",
-    "students": [],
-    "teacher": null
+    "forename": "anna",
+    "lastname": "lee",
+    "email": "anna.lee.student@com",
+    "subjects": []
 }
+
+
+<------------------------------- delete student --------------------------------------------->
+Method: DELETE
+Url: http://localhost:8080/javaEnterprise/student/delete/anna.lee.student@com
+
+Result:
+Status: 200
+{
+    "Student "anna.lee.student@com" was deleted from database!"
+}
+
+
+<------------------------------- find student by email --------------------------------------------->
+Method: GET
+Url: http://localhost:8080/javaEnterprise/student/find/email/kim.axelsson@mail.com
+
+Result:
+Status: 200
+{
+    "forename": "Kim",
+    "lastname": "Axelsson",
+    "email": "kim.axelsson@mail.com",
+    "subjects": [
+        "Javascript"
+    ]
+}
+
+
+<------------------------------- find students by forename --------------------------------------------->
+Method: GET
+Url: http://localhost:8080/javaEnterprise/student/find/forename/Anna
+
+Result:
+Status: 200
+[
+    {
+        "forename": "anna",
+        "lastname": "lee",
+        "email": "anna.lee.student@com",
+        "subjects": []
+    },
+    {
+        "forename": "anna",
+        "lastname": "salamon",
+        "email": "anna.salamon.student@com",
+        "subjects": []
+    }
+]
+
+
 
 
 

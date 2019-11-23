@@ -166,27 +166,4 @@ public class SubjectController {
   }
 
 
-  // ERROR
-
-//  @GET
-//  @Path("find/")
-//  @Consumes(MediaType.APPLICATION_JSON)
-//  @Produces({"application/JSON"})
-//  public Response findAllSubjectsByTitleList(String titleListBody) {
-//    try {
-//      LOGGER.info("Controller: findAllSubjectsByTitleList");
-//      List<SubjectModel> result = sal.findAllSubjectsByTitleList(titleListBody);
-//      return Response.ok(result).build();
-//    } catch (EJBTransactionRolledbackException | PersistenceException e) {
-//      LOGGER.info("findAllSubjectsByTitle: " + e.getClass().getSimpleName());
-//      return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Subject with current title not found!\"}").build(); //417
-//    } catch (RuntimeException e) {
-//      LOGGER.info("findAllSubjectsByTitle: " + e.getClass().getSimpleName());
-//      return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build(); //404
-//    } catch (Exception e) {
-//      LOGGER.info("findAllSubjectsByTitle: " + e.getClass().getSimpleName());
-//      return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build(); //400
-//    }
-//  }
-
 }
