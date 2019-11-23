@@ -59,8 +59,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     Subject subjectToAdd = subject.toEntity(subjectBody);
     Subject dbResponse = subjectTA.addSubject(subjectToAdd);
 
-
-//    // bind subject with transientStudents, ?? not need in add method
+    //    // bind subject with transientStudents, ?? not need in add method
 //    if (subjectToAdd.getTransientStudents() != null) {
 //      List<Student> students = studentTA.getStudentsByEmail(subjectToAdd.getTransientStudents());
 //      students.forEach(stud -> {
@@ -143,6 +142,9 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
     return null;
   }
+
+
+
 
 
   //////////////////////////////////// Subject end //////////////////////////////////////////
@@ -324,6 +326,8 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
     return null;
   }
+
+
 
 
 

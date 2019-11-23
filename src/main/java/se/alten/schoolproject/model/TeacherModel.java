@@ -17,17 +17,16 @@ import java.util.Set;
 @AllArgsConstructor
 public class TeacherModel {
 
-  //private static final Logger LOGGER = (Logger) Logger.getLogger(TeacherController.class.getName());
-
-
   private String forename;
   private String lastname;
   private String email;
 
-  public TeacherModel toModel(Teacher teacher) {
+  private Set<String> subjects = new HashSet<>();
+
+  public TeacherModel toModel(Teacher teacherObject) {
     TeacherModel teacherModel = new TeacherModel();
 
-    switch (teacher.getForename()) {
+    switch (teacherObject.getForename()) {
       case "empty":
         teacherModel.setForename("empty");
         return teacherModel;
@@ -35,13 +34,18 @@ public class TeacherModel {
         teacherModel.setForename("duplicate");
         return teacherModel;
       default:
-        teacherModel.setForename(teacher.getForename());
-        teacherModel.setLastname(teacher.getLastname());
-        teacherModel.setEmail(teacher.getEmail());
+        teacherModel.setForename(teacherObject.getForename());
+        teacherModel.setLastname(teacherObject.getLastname());
+        teacherModel.setEmail(teacherObject.getEmail());
+
+        teacherObject.getJoinedSubjects().forEach(subj -> {
+          teacherModel.subjects.add(subj.getTitle());
+        });
 
         return teacherModel;
     }
   }
+
 
   public List<TeacherModel> toModelList(List<Teacher> teachers) {
     List<TeacherModel> teacherModels = new ArrayList<>();

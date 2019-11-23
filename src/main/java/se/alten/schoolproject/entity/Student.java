@@ -69,10 +69,6 @@ public class Student implements Serializable {
             student.setEmail("");
         }
 
-
-
-
-
         return student;
     }
 

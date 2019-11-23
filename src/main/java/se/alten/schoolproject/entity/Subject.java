@@ -72,7 +72,8 @@ public class Subject implements Serializable {
         tempStudents.add(jsonArray.get(i).toString().replace("\"", ""));
       }
       subject.setTransientStudents(tempStudents);
-    } else {
+    }
+    else {
       subject.setTransientStudents(null);
     }
 

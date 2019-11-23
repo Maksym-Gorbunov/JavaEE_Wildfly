@@ -52,6 +52,8 @@ public class SubjectModel {
             subj.getJoinedStudents().forEach(stud -> {
                 sm.students.add(stud.getEmail());
             });
+            // teacher
+            sm.teacher = subj.getJoinedTeacher();
 
             subjectModels.add(sm);
         });

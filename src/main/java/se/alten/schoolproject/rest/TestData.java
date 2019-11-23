@@ -2,7 +2,6 @@ package se.alten.schoolproject.rest;
 
 import lombok.NoArgsConstructor;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -14,7 +13,7 @@ import java.util.List;
 
 
 /*
-* Populate database med test data
+* Populate database with fake data
 * ex: http://localhost:8080/javaEnterprise/fill
 * */
 
@@ -26,13 +25,14 @@ public class TestData {
   @Inject
   private SchoolAccessLocal sal;
 
+
   @GET
   @Produces({"application/JSON"})
   public Response fill() {
     System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<< fill() >>>>>>>>>>>>>>>>>>>>>>>>>>");
-    populateSubjects();
-    populateStudents();
     populateTeachers();
+    populateStudents();
+    populateSubjects();
     return Response.ok().entity("{\"Test data was added to database!\"}").build();
   }
 
@@ -130,4 +130,5 @@ public class TestData {
     subjects.add("{\"title\":\"OOP\"}");
     subjects.stream().forEach(s -> sal.addSubject(s));
   }
+
 }

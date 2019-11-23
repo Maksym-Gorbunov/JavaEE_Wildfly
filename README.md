@@ -8,6 +8,7 @@ Small project for teaching purposes.
 * Git
 * Maven
 * MySQL / JPQL
+* GET / POST / PUT / PATCH / DELETE
 
 ## Wildfly configuration
 
@@ -35,6 +36,26 @@ Url: http://localhost:8080/javaEnterprise/fill
 add: fake subjects, students and teachers without joins, pure entity only
 
 
+<------------------------------- add student to subject --------------------------------------------->
+Method: POST
+Url: http://localhost:8080/javaEnterprise/subject/add/student/Javascript
+Body:
+{
+	"student": "kim.axelsson@mail.com"
+}
+
+Result:
+Status: 200
+[
+    {
+        "id": null,
+        "title": "Javascript",
+        "students": [
+            "kim.axelsson@mail.com"
+        ],
+        "teacher": null
+    }
+]
 
                                                             
 <------------------------------- get all subjects --------------------------------------------->
@@ -102,12 +123,12 @@ Status: 200
 }
 
 
-<------------------------------- add student to subject --------------------------------------------->
+<------------------------------- add teacher to subject --------------------------------------------->
 Method: POST
-Url: http://localhost:8080/javaEnterprise/subject/add/student/Javascript
+Url: http://localhost:8080/javaEnterprise/subject/add/teacher/Javascript
 Body:
 {
-	"student": "kim.axelsson@mail.com"
+	"teacher": "erik.karlsson@iths.se"
 }
 
 Result:
@@ -119,7 +140,7 @@ Status: 200
         "students": [
             "kim.axelsson@mail.com"
         ],
-        "teacher": null
+        "teacher": "erik.karlsson@iths.se"
     }
 ]
 
@@ -247,6 +268,30 @@ Status: 200
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#                LAB 1 API -> commit "Lab1 done"
 
 				    ---ADD---
 request type: Post
