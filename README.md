@@ -30,6 +30,116 @@ It should say outcome success. Write `jboss-cli -c --command=:reload` to restart
 
 
 # API Documentation
+                                                            
+<------------------------------- get all subjects --------------------------------------------->
+Method: GET
+Url: http://localhost:8080/javaEnterprise/subject
+
+Result:
+Status: 200
+[
+    {
+        "id": null,
+        "title": "AI",
+        "students": [],
+        "teacher": null
+    },
+    {
+        "id": null,
+        "title": "Ruby",
+        "students": [],
+        "teacher": null
+    }
+]
+
+
+<------------------------------- add subject --------------------------------------------->
+Method: POST
+Url: http://localhost:8080/javaEnterprise/subject/add
+Body:
+{
+	"title":"Python"
+}
+
+Result:
+Status: 200
+{
+    "id": null,
+    "title": "Python",
+    "students": [],
+    "teacher": null
+}
+
+
+<------------------------------- delete subject --------------------------------------------->
+Method: DELETE
+Url: http://localhost:8080/javaEnterprise/subject/delete/Ruby
+
+Result:
+Status: 200
+{
+    "Subject "Ruby" was deleted from database!"
+}
+
+
+<------------------------------- find subject --------------------------------------------->
+Method: GET
+Url: http://localhost:8080/javaEnterprise/subject/find/AI
+
+Result:
+Status: 200
+{
+    "id": null,
+    "title": "AI",
+    "students": [],
+    "teacher": null
+}
+
+
+<------------------------------- find subject --------------------------------------------->
+Method: DELETE
+Url: http://localhost:8080/javaEnterprise/subject/find/AI
+
+Result:
+Status: 200
+{
+    "id": null,
+    "title": "AI",
+    "students": [],
+    "teacher": null
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 				    ---ADD---
 request type: Post
 ______________________________________________________________________________________
