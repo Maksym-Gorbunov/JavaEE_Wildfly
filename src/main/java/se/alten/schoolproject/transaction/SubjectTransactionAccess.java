@@ -19,5 +19,7 @@ public interface SubjectTransactionAccess {
 
   Subject getSubjectByTitle(String subjectTitle);
 
+  Subject updateSubject(String title, String newTitle);
+
 //  List<Student> listStudentsBySubject(String subject);
 }

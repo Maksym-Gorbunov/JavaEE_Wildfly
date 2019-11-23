@@ -94,6 +94,27 @@ public class SubjectController {
   }
 
 
+  @PUT
+  @Produces({"application/JSON"})
+  @Path("/update")
+  public Response updateSubject(@QueryParam("title") String title, @QueryParam("newTitle") String newTitle) {
+    try {
+      LOGGER.info("---updateSubject---");
+      SubjectModel subjectModel = sal.updateSubject(title,newTitle);
+      return Response.ok(subjectModel).build();
+    } catch (EJBTransactionRolledbackException | PersistenceException e) {
+      LOGGER.info("updateSubject: " + e.toString());
+      return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Subject not found!\"}").build(); //417
+    } catch (RuntimeException e) {
+      LOGGER.info("updateSubject: " + e.toString());
+      return Response.status(Response.Status.NOT_FOUND).entity("{\"Could not find resource for full path!\"}").build(); //404
+    } catch (Exception e) {
+      LOGGER.info("updateSubject: " + e.toString());
+      return Response.status(Response.Status.BAD_REQUEST).entity("{\"Oops. Server side error!\"}").build(); //400
+    }
+  }
+
+
   @GET
   @Path("find/{title}")
   @Produces({"application/JSON"})

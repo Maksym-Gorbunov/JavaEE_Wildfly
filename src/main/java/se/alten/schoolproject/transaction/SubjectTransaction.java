@@ -52,6 +52,16 @@ public class SubjectTransaction implements SubjectTransactionAccess {
     return foundedSubject;
   }
 
+  @Override
+  public Subject updateSubject(String title, String newTitle) {
+    String queryStr = "UPDATE Subject SET title = :newTitle WHERE title = :title";
+    TypedQuery<Subject> query = em.createQuery(queryStr, Subject.class);
+    query.setParameter("newTitle", newTitle)
+            .setParameter("title", title)
+            .executeUpdate();
+    return query.getSingleResult();
+  }
+
 
   @Override
   public Subject findSubjectByTitle(String title) {

@@ -82,6 +82,20 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
 
 
   @Override
+  public SubjectModel updateSubject(String title, String newTitle) {
+    if((title==null || title.equals("")) || (newTitle==null && newTitle.equals(""))){
+      return null;
+    }
+
+    Subject dbResult = subjectTA.updateSubject(title, newTitle);
+    if((dbResult!=null) && (dbResult.getTitle().equals(newTitle))){
+      return subjectModel.toModel(dbResult);
+    }
+    return null;
+  }
+
+
+  @Override
   public SubjectModel findSubjectByTitle(String title) {
     if ((title == null) || (title.isEmpty())) {
       return null;
@@ -143,11 +157,8 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     return null;
   }
 
-
-
-
-
   //////////////////////////////////// Subject end //////////////////////////////////////////
+
 
 
   //////////////////////////////////// Student start //////////////////////////////////////////
@@ -184,37 +195,37 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   }
 
 
-//  @Override
-//  public StudentModel updateStudent(String forename, String lastname, String email) {
-//    Student studentToUpdate = new Student(forename, lastname, email);
-//    boolean emptyField = Stream.of(forename, lastname, email)
-//            .anyMatch(String::isBlank);
-//    if (emptyField) {
-//      studentToUpdate.setForename("empty");
-//      return studentModel.toModel(studentToUpdate);
-//    } else {
-//      Student temp = studentTA.updateStudent(forename, lastname, email);
-//      return studentModel.toModel(studentToUpdate);
-//    }
-//  }
+  @Override
+  public StudentModel updateStudent(String forename, String lastname, String email) {
+    Student studentToUpdate = new Student(forename, lastname, email);
+    boolean emptyField = Stream.of(forename, lastname, email)
+            .anyMatch(String::isBlank);
+    if (emptyField) {
+      studentToUpdate.setForename("empty");
+      return studentModel.toModel(studentToUpdate);
+    } else {
+      Student temp = studentTA.updateStudent(forename, lastname, email);
+      return studentModel.toModel(studentToUpdate);
+    }
+  }
 
 
-  //  @Override
-//  public StudentModel updateStudentPartial(String studentBody) {
-//    Student studentToUpdate = student.toEntity(studentBody);
-//    boolean emptyBody =
-//            Stream.of(studentToUpdate.getForename(),
-//                    studentToUpdate.getLastname(),
-//                    studentToUpdate.getEmail())
-//                    .allMatch(String::isBlank);
-//    if (emptyBody) {
-//      studentToUpdate.setForename("empty");
-//      return studentModel.toModel(studentToUpdate);
-//    } else {
-//      studentTA.updateStudentPartial(studentToUpdate);
-//      return studentModel.toModel(studentToUpdate);
-//    }
-//  }
+    @Override
+  public StudentModel updateStudentPartial(String studentBody) {
+    Student studentToUpdate = student.toEntity(studentBody);
+    boolean emptyBody =
+            Stream.of(studentToUpdate.getForename(),
+                    studentToUpdate.getLastname(),
+                    studentToUpdate.getEmail())
+                    .allMatch(String::isBlank);
+    if (emptyBody) {
+      studentToUpdate.setForename("empty");
+      return studentModel.toModel(studentToUpdate);
+    } else {
+      studentTA.updateStudentPartial(studentToUpdate);
+      return studentModel.toModel(studentToUpdate);
+    }
+  }
 
   @Override
   public StudentModel findStudentByEmail(String email) {
@@ -274,39 +285,38 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
   }
 
 
-//TEACHER UPDATE
-//  @Override
-//  public StudentModel updateStudent(String forename, String lastname, String email) {
-//    Student studentToUpdate = new Student(forename, lastname, email);
-//    boolean emptyField = Stream.of(forename, lastname, email)
-//            .anyMatch(String::isBlank);
-//    if (emptyField) {
-//      studentToUpdate.setForename("empty");
-//      return studentModel.toModel(studentToUpdate);
-//    } else {
-//      Student temp = studentTA.updateStudent(forename, lastname, email);
-//      return studentModel.toModel(studentToUpdate);
-//    }
-//  }
+  @Override
+  public TeacherModel updateTeacher(String forename, String lastname, String email) {
+    Teacher teacherToUpdate = new Teacher(forename, lastname, email);
+    boolean emptyField = Stream.of(forename, lastname, email)
+            .anyMatch(String::isBlank);
+    if (emptyField) {
+      teacherToUpdate.setForename("empty");
+      return teacherModel.toModel(teacherToUpdate);
+    } else {
+      Teacher temp = teacherTA.updateTeacher(forename,lastname,email);
+      return teacherModel.toModel(teacherToUpdate);
+    }
+  }
 
 
-//TEACHER UPDATE partial
-  //  @Override
-//  public StudentModel updateStudentPartial(String studentBody) {
-//    Student studentToUpdate = student.toEntity(studentBody);
-//    boolean emptyBody =
-//            Stream.of(studentToUpdate.getForename(),
-//                    studentToUpdate.getLastname(),
-//                    studentToUpdate.getEmail())
-//                    .allMatch(String::isBlank);
-//    if (emptyBody) {
-//      studentToUpdate.setForename("empty");
-//      return studentModel.toModel(studentToUpdate);
-//    } else {
-//      studentTA.updateStudentPartial(studentToUpdate);
-//      return studentModel.toModel(studentToUpdate);
-//    }
-//  }
+    @Override
+  public TeacherModel updateTeacherPartial(String teacherBody) {
+    Teacher teacherToUpdate = teacher.toEntity(teacherBody);
+    boolean emptyBody =
+            Stream.of(teacherToUpdate.getForename(),
+                    teacherToUpdate.getLastname(),
+                    teacherToUpdate.getEmail())
+                    .allMatch(String::isBlank);
+    if (emptyBody) {
+      teacherToUpdate.setForename("empty");
+      return teacherModel.toModel(teacherToUpdate);
+    } else {
+      teacherTA.updateTeacherPartial(teacherToUpdate);
+      return teacherModel.toModel(teacherToUpdate);
+    }
+  }
+
 
   @Override
   public TeacherModel findTeacherByEmail(String email) {
@@ -326,9 +336,6 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     }
     return null;
   }
-
-
-
 
 
   @Override

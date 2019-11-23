@@ -20,6 +20,8 @@ public interface SchoolAccessLocal {
 
   List<SubjectModel> findAllSubjectsByTitleList(String titleList);
 
+  SubjectModel updateSubject(String title, String newTitle);
+
   SubjectModel findSubjectByTitle(String title);
 
   String addStudentToSubject(String subjectTitle, String studentsBody);
@@ -43,7 +45,16 @@ public interface SchoolAccessLocal {
 
   String deleteTeacher(String email);
 
+  StudentModel updateStudent(String forename, String lastname, String email);
+
+  StudentModel updateStudentPartial(String studentBody);
+
   StudentModel findStudentByEmail(String email);
+
+  //TEACHER UPDATE
+  TeacherModel updateTeacher(String forename, String lastname, String email);
+
+  TeacherModel updateTeacherPartial(String teacherBody);
 
   TeacherModel findTeacherByEmail(String email);
 
